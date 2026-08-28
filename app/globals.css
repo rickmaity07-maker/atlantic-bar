@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-obsidian: #0a0806;
+  --color-charcoal: #15100a;
+  --color-charcoal-light: #1d1610;
+  --color-gold: #c9a25a;
+  --color-gold-bright: #ecd08b;
+  --color-bronze: #8a6a3c;
+  --color-wine: #5a1c1f;
+  --color-cream: #efe6d3;
+  --color-smoke: #a89d87;
+
+  --font-display: "Playfair Display", ui-serif, Georgia, serif;
+  --font-serif-alt: "Cormorant Garamond", ui-serif, Georgia, serif;
+  --font-body: "Jost", ui-sans-serif, system-ui, sans-serif;
+  --font-script: "Parisienne", cursive;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-obsidian);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-obsidian);
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(var(--color-bronze), var(--color-gold));
+  border-radius: 999px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-gold-bright);
+  outline-offset: 3px;
+}
+
+.text-gradient-gold {
+  background: linear-gradient(120deg, #8a6a3c 0%, #ecd08b 35%, #c9a25a 55%, #f3dda3 75%, #8a6a3c 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.hairline {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold) 50%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
