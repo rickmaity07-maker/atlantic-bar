@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import { AuthProvider } from "./context/AuthContext";
 
 export const metadata: Metadata = {
   title: "Atlantic Lounge Bar — Luxury Vibes & Premium Nights",
@@ -19,7 +20,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         />
       </head>
       <body className="min-h-full flex flex-col bg-obsidian text-cream font-body selection:bg-gold/30 selection:text-cream">
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );

@@ -1,40 +1,47 @@
 import "server-only";
 import { cookies } from "next/headers";
-import { getAdminAuth } from "@/lib/firebaseAdmin";
+import { getAdminAuth, getDb } from "@/lib/firebaseAdmin";
 
-export const SESSION_COOKIE_NAME = "admin_session";
+export const SESSION_COOKIE_NAME = "session";
 export const SESSION_MAX_AGE_MS = 1000 * 60 * 60 * 24 * 5; // 5 days (Firebase's cap is 14 days)
 
-function getAllowedAdminEmails(): string[] {
-  return (process.env.ADMIN_EMAILS ?? "")
-    .split(",")
-    .map((e) => e.trim().toLowerCase())
-    .filter(Boolean);
-}
-
-export function isEmailAllowed(email: string | undefined | null): boolean {
-  if (!email) return false;
-  return getAllowedAdminEmails().includes(email.toLowerCase());
+export interface SessionUser {
+  uid: string;
+  email: string | null;
 }
 
 /**
- * Reads and verifies the admin session cookie on the server. Returns the
- * session (uid + email) if valid AND the email is on the ADMIN_EMAILS
- * allowlist, otherwise null. Use this in server components/route handlers
- * to gate access — never trust a signed-in Firebase user alone, since
- * anyone can create an account unless email/password sign-up is restricted
- * in the Firebase Console.
+ * Reads and verifies the session cookie set by /api/auth/session after any
+ * sign-in (email/password, Google, or Facebook — same cookie for everyone).
+ * Returns the signed-in user, or null if there's no valid session.
  */
-export async function getAdminSession(): Promise<{ uid: string; email: string } | null> {
+export async function getSession(): Promise<SessionUser | null> {
   const cookieStore = await cookies();
   const sessionCookie = cookieStore.get(SESSION_COOKIE_NAME)?.value;
   if (!sessionCookie) return null;
 
   try {
     const decoded = await getAdminAuth().verifySessionCookie(sessionCookie, true);
-    if (!isEmailAllowed(decoded.email)) return null;
-    return { uid: decoded.uid, email: decoded.email! };
+    return { uid: decoded.uid, email: decoded.email ?? null };
   } catch {
     return null;
   }
+}
+
+/**
+ * Same as getSession(), but additionally requires that the user's Firestore
+ * profile (users/{uid}) has role === "admin". This is the ONLY thing that
+ * grants admin access — there's no separate admin login anymore. To make
+ * someone an admin: they sign in normally through /login, which creates
+ * their users/{uid} document, then you open Firebase Console → Firestore →
+ * users → their document → change role from "user" to "admin".
+ */
+export async function getAdminSession(): Promise<SessionUser | null> {
+  const session = await getSession();
+  if (!session) return null;
+
+  const doc = await getDb().collection("users").doc(session.uid).get();
+  if (doc.data()?.role !== "admin") return null;
+
+  return session;
 }

@@ -8,11 +8,37 @@ import {
   type ConfirmationResult,
 } from "firebase/auth";
 import { getClientAuth } from "@/lib/firebaseClient";
-import { useCustomerAuth } from "@/lib/useCustomerAuth";
+import { useAuth } from "@/app/context/AuthContext";
+
+function friendlyPhoneError(err: unknown): string {
+  const code = err instanceof Error && "code" in err ? String((err as { code: unknown }).code) : "";
+  switch (code) {
+    case "auth/operation-not-allowed":
+      return "Phone sign-in isn't enabled for this project yet — enable \"Phone\" under Firebase Console → Authentication → Sign-in method.";
+    case "auth/invalid-phone-number":
+      return "That phone number doesn't look valid — include the country code, e.g. +49 151 23456789.";
+    case "auth/billing-not-enabled":
+    case "auth/quota-exceeded":
+      return "SMS codes need the Blaze (pay-as-you-go) plan enabled on this Firebase project.";
+    case "auth/too-many-requests":
+      return "Too many attempts — please wait a few minutes and try again.";
+    case "auth/captcha-check-failed":
+    case "auth/invalid-app-credential":
+      return "Verification check failed — refresh the page and try again.";
+    case "auth/invalid-verification-code":
+      return "That code doesn't match — check the SMS and try again.";
+    case "auth/code-expired":
+      return "That code expired — request a new one.";
+    case "auth/credential-already-in-use":
+      return "That phone number is already linked to a different account.";
+    default:
+      return err instanceof Error ? err.message : "Something went wrong.";
+  }
+}
 
 export default function VerifyPhonePage() {
   const router = useRouter();
-  const { user, loading: authLoading, isFullyVerified } = useCustomerAuth();
+  const { user, loading: authLoading, needsPhoneVerification, refreshProfile } = useAuth();
 
   const [phone, setPhone] = useState("");
   const [code, setCode] = useState("");
@@ -25,8 +51,8 @@ export default function VerifyPhonePage() {
 
   useEffect(() => {
     if (!authLoading && !user) router.replace("/login");
-    if (!authLoading && isFullyVerified) router.replace("/#reserve");
-  }, [authLoading, user, isFullyVerified, router]);
+    if (!authLoading && user && !needsPhoneVerification) router.replace("/#reserve");
+  }, [authLoading, user, needsPhoneVerification, router]);
 
   useEffect(() => {
     if (!recaptchaContainerRef.current || verifierRef.current) return;
@@ -45,11 +71,20 @@ export default function VerifyPhonePage() {
     setSending(true);
     try {
       if (!user) throw new Error("Not signed in.");
-      if (!verifierRef.current) throw new Error("Verifier not ready — try again.");
+      if (!verifierRef.current) throw new Error("Verifier not ready — refresh and try again.");
       const result = await linkWithPhoneNumber(user, phone, verifierRef.current);
       setConfirmation(result);
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not send code.");
+      setError(friendlyPhoneError(err));
+      // A failed attempt leaves the invisible reCAPTCHA in a used state —
+      // reset it so the next attempt doesn't silently fail.
+      verifierRef.current?.clear();
+      verifierRef.current = null;
+      if (recaptchaContainerRef.current) {
+        verifierRef.current = new RecaptchaVerifier(getClientAuth(), recaptchaContainerRef.current, {
+          size: "invisible",
+        });
+      }
     } finally {
       setSending(false);
     }
@@ -60,15 +95,23 @@ export default function VerifyPhonePage() {
     setError(null);
     setConfirming(true);
     try {
-      if (!confirmation) throw new Error("Request a code first.");
+      if (!confirmation || !user) throw new Error("Request a code first.");
       await confirmation.confirm(code);
-      // Force-refresh the ID token so it carries the new phone_number claim
-      // the next time it's sent to the server.
-      await user?.getIdToken(true);
+
+      // Force-refresh so the ID token carries the new phone_number claim,
+      // then sync it to Firestore + the session cookie.
+      const idToken = await user.getIdToken(true);
+      await fetch("/api/auth/session", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idToken }),
+      });
+      await refreshProfile();
+
       router.push("/#reserve");
       router.refresh();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Invalid code — please try again.");
+      setError(friendlyPhoneError(err));
     } finally {
       setConfirming(false);
     }

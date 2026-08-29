@@ -3,9 +3,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { signOut } from "firebase/auth";
-import { useCustomerAuth } from "@/lib/useCustomerAuth";
-import { getClientAuth } from "@/lib/firebaseClient";
+import { useAuth } from "@/app/context/AuthContext";
 
 const LINKS = [
   { label: "About", href: "#about" },
@@ -18,7 +16,7 @@ const LINKS = [
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
-  const { user, loading: authLoading } = useCustomerAuth();
+  const { user, loading: authLoading, isAdmin, signOut } = useAuth();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -67,12 +65,22 @@ export default function Nav() {
         <div className="hidden md:flex items-center gap-4">
           {!authLoading && (
             user ? (
-              <button
-                onClick={() => signOut(getClientAuth())}
-                className="text-xs tracking-[0.2em] uppercase text-smoke hover:text-gold-bright transition-colors"
-              >
-                Sign Out
-              </button>
+              <>
+                {isAdmin && (
+                  <Link
+                    href="/admin/dashboard"
+                    className="text-xs tracking-[0.2em] uppercase text-gold-bright hover:text-cream transition-colors"
+                  >
+                    Admin
+                  </Link>
+                )}
+                <button
+                  onClick={() => signOut()}
+                  className="text-xs tracking-[0.2em] uppercase text-smoke hover:text-gold-bright transition-colors"
+                >
+                  Sign Out
+                </button>
+              </>
             ) : (
               <Link
                 href="/login"
@@ -121,15 +129,26 @@ export default function Nav() {
           ))}
           <li>
             {user ? (
-              <button
-                onClick={() => {
-                  signOut(getClientAuth());
-                  setOpen(false);
-                }}
-                className="text-sm tracking-[0.2em] uppercase text-cream hover:text-gold-bright"
-              >
-                Sign Out
-              </button>
+              <>
+                {isAdmin && (
+                  <Link
+                    href="/admin/dashboard"
+                    onClick={() => setOpen(false)}
+                    className="block mb-5 text-sm tracking-[0.2em] uppercase text-gold-bright"
+                  >
+                    Admin
+                  </Link>
+                )}
+                <button
+                  onClick={() => {
+                    signOut();
+                    setOpen(false);
+                  }}
+                  className="text-sm tracking-[0.2em] uppercase text-cream hover:text-gold-bright"
+                >
+                  Sign Out
+                </button>
+              </>
             ) : (
               <Link
                 href="/login"

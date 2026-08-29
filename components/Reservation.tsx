@@ -5,12 +5,12 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useState, type FormEvent } from "react";
 import { PHOTOS } from "@/lib/images";
-import { useCustomerAuth } from "@/lib/useCustomerAuth";
+import { useAuth } from "@/app/context/AuthContext";
 
 const FIELDS = ["Name", "Date", "Guests"];
 
 export default function Reservation() {
-  const { user, loading: authLoading, needsPhoneVerification } = useCustomerAuth();
+  const { user, loading: authLoading, needsPhoneVerification } = useAuth();
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);

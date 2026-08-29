@@ -6,6 +6,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signInWithPopup,
+  type UserCredential,
 } from "firebase/auth";
 import { getClientAuth, newGoogleProvider, newFacebookProvider } from "@/lib/firebaseClient";
 
@@ -37,7 +38,26 @@ export default function CustomerLoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState<"email" | "google" | "facebook" | null>(null);
 
-  function afterSignIn(needsPhone: boolean) {
+  // The one step every sign-in method was missing: sync the Firestore
+  // users/{uid} profile and set the session cookie. Without this call,
+  // no user document ever gets created, and there's nothing to switch to
+  // "admin" in the Firebase Console.
+  async function syncSessionAndRedirect(credential: UserCredential) {
+    const idToken = await credential.user.getIdToken();
+    const res = await fetch("/api/auth/session", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ idToken }),
+    });
+
+    if (!res.ok) {
+      throw new Error("Signed in, but couldn't sync your profile. Please try again.");
+    }
+
+    const data: { role: "user" | "admin"; phoneVerified: boolean } = await res.json();
+    const isOAuthOnly = credential.user.providerData.every((p) => p.providerId !== "password");
+    const needsPhone = isOAuthOnly && !data.phoneVerified;
+
     router.push(needsPhone ? "/login/verify-phone" : "/#reserve");
     router.refresh();
   }
@@ -48,13 +68,11 @@ export default function CustomerLoginPage() {
     setLoading("email");
     try {
       const auth = getClientAuth();
-      if (mode === "signup") {
-        await createUserWithEmailAndPassword(auth, email, password);
-      } else {
-        await signInWithEmailAndPassword(auth, email, password);
-      }
-      // Email/password accounts don't need the phone-OTP step.
-      afterSignIn(false);
+      const credential =
+        mode === "signup"
+          ? await createUserWithEmailAndPassword(auth, email, password)
+          : await signInWithEmailAndPassword(auth, email, password);
+      await syncSessionAndRedirect(credential);
     } catch (err) {
       setError(friendlyAuthError(err));
     } finally {
@@ -66,8 +84,8 @@ export default function CustomerLoginPage() {
     setError(null);
     setLoading("google");
     try {
-      const cred = await signInWithPopup(getClientAuth(), newGoogleProvider());
-      afterSignIn(!cred.user.phoneNumber);
+      const credential = await signInWithPopup(getClientAuth(), newGoogleProvider());
+      await syncSessionAndRedirect(credential);
     } catch (err) {
       setError(friendlyAuthError(err));
     } finally {
@@ -79,8 +97,8 @@ export default function CustomerLoginPage() {
     setError(null);
     setLoading("facebook");
     try {
-      const cred = await signInWithPopup(getClientAuth(), newFacebookProvider());
-      afterSignIn(!cred.user.phoneNumber);
+      const credential = await signInWithPopup(getClientAuth(), newFacebookProvider());
+      await syncSessionAndRedirect(credential);
     } catch (err) {
       setError(friendlyAuthError(err));
     } finally {
@@ -96,7 +114,7 @@ export default function CustomerLoginPage() {
           {mode === "signin" ? "Sign In" : "Create Account"}
         </h1>
         <p className="text-xs text-smoke mb-8">
-          An account keeps table requests genuine — one login, one guest.
+          One login for everyone — guests and staff alike.
         </p>
 
         <div className="flex gap-2 mb-8">
