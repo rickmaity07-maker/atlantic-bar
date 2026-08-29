@@ -3,10 +3,11 @@ import { z } from "zod";
 import { FieldValue } from "firebase-admin/firestore";
 import { getAdminSession } from "@/lib/adminAuth";
 import { getDb } from "@/lib/firebaseAdmin";
+import { HttpsImageUrlSchema } from "@/lib/validation";
 
 const GalleryItemSchema = z.object({
   label: z.string().trim().min(1).max(60),
-  imageUrl: z.string().trim().url(),
+  imageUrl: HttpsImageUrlSchema,
   span: z.enum(["normal", "wide", "large"]).default("normal"),
   order: z.coerce.number().int().default(0),
 });

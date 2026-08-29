@@ -24,6 +24,12 @@ service cloud.firestore {
       allow read, write: if false;
     }
 
+    // Internal rate-limit counters written only by the Admin SDK
+    // (lib/rateLimit.ts). No client access, ever.
+    match /rateLimits/{key} {
+      allow read, write: if false;
+    }
+
     // Explicit default-deny for every other path in this database.
     // Firestore already denies unmatched paths by default, but this makes
     // it impossible for a future collection to silently inherit an open

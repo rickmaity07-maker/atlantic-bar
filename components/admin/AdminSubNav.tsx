@@ -7,6 +7,7 @@ const TABS = [
   { href: "/admin/dashboard", label: "Reservations" },
   { href: "/admin/dashboard/menu", label: "Menu" },
   { href: "/admin/dashboard/gallery", label: "Gallery" },
+  { href: "/admin/dashboard/users", label: "Users" },
 ];
 
 export default function AdminSubNav() {

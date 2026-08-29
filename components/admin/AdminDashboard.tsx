@@ -127,8 +127,8 @@ export default function AdminDashboard({
   async function logout() {
     setLoggingOut(true);
     try {
-      await fetch("/api/admin/session", { method: "DELETE" });
-      router.push("/admin/login");
+      await fetch("/api/auth/session", { method: "DELETE" });
+      router.push("/login");
       router.refresh();
     } finally {
       setLoggingOut(false);

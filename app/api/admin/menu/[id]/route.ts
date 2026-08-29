@@ -3,12 +3,13 @@ import { z } from "zod";
 import { FieldValue } from "firebase-admin/firestore";
 import { getAdminSession } from "@/lib/adminAuth";
 import { getDb } from "@/lib/firebaseAdmin";
+import { HttpsImageUrlSchema } from "@/lib/validation";
 
 const MenuItemUpdateSchema = z.object({
   name: z.string().trim().min(1).max(80),
   note: z.string().trim().min(1).max(200),
   price: z.string().trim().min(1).max(10),
-  imageUrl: z.string().trim().url(),
+  imageUrl: HttpsImageUrlSchema,
   order: z.coerce.number().int().default(0),
 });
 

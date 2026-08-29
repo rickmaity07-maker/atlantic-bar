@@ -43,14 +43,14 @@ your server.
 
 1. Create a Firebase project (or reuse an existing one) and enable Firestore.
 2. Firebase Console → Project Settings → Service Accounts → *Generate new private key*. This gives you `project_id`, `client_email`, and `private_key`.
-3. Deploy `firestore.rules` to that project (`firebase deploy --only firestore:rules`, or paste it into the Firestore Rules tab in the console).
+3. Deploy `firestore.rules` to that project. `firebase.json`/`.firebaserc` are already set up for this repo's project — run `firebase login` then `firebase deploy --only firestore:rules` (if you're using a different Firebase project, run `firebase use --add` first to point the CLI at it). You can also just paste the file into the Firestore Rules tab in the console instead.
 4. Sign up at [resend.com](https://resend.com), verify a sending domain (or use their `onboarding@resend.dev` test address while developing), and grab an API key.
 5. Copy `.env.local.example` to `.env.local` and fill in all the values.
 6. When deploying (e.g. on Vercel), add the same variables under Project Settings → Environment Variables.
 
 `npm install` will pull in the new dependencies (`firebase-admin`, `resend`, `zod`).
 
-To view reservations, use the Firebase Console's Firestore data tab — or I can build a small admin page for you later if you want to manage them from the site itself.
+Manage reservations, the drink menu, and gallery photos from `/admin/dashboard` once signed in as an admin. To make an account an admin: sign in once at `/login` (creates their Firestore profile), have an existing admin promote them from the dashboard's Users tab (`/admin/dashboard/users`) — or, for the very first admin, edit their `users/{uid}` document's `role` field to `"admin"` directly in the Firebase Console.
 
 ## The 3D intro
 
@@ -59,7 +59,7 @@ before the site: a gold-lit corridor with your real photos mounted as floating
 frames.
 
 - **Scroll / swipe up** — dolly forward through the corridor
-- **Drag** — look around
+- **Drag** — look around 
 - Idle — the camera auto-drifts gently on its own
 - Reaching the end (or the "Skip Intro" button) triggers a curtain-wipe into the normal site
 - `prefers-reduced-motion` skips the 3D scene entirely

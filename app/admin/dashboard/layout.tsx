@@ -7,7 +7,7 @@ export default async function AdminDashboardLayout({
   children: React.ReactNode;
 }) {
   const session = await getAdminSession();
-  if (!session) redirect("/admin/login");
+  if (!session) redirect("/login");
 
   return <>{children}</>;
 }

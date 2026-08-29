@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { FieldValue } from "firebase-admin/firestore";
 import { getAdminAuth, getDb } from "@/lib/firebaseAdmin";
 import { SESSION_COOKIE_NAME, SESSION_MAX_AGE_MS } from "@/lib/adminAuth";
+import { checkRateLimit } from "@/lib/rateLimit";
 
 /**
  * Called once right after every sign-in — email/password, Google, or
@@ -15,6 +16,18 @@ import { SESSION_COOKIE_NAME, SESSION_MAX_AGE_MS } from "@/lib/adminAuth";
  *     on client-side Firebase Auth state.
  */
 export async function POST(req: NextRequest) {
+  const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const { allowed } = await checkRateLimit(`auth-session:${ip}`, {
+    windowMs: 60_000,
+    maxRequests: 10,
+  });
+  if (!allowed) {
+    return NextResponse.json(
+      { error: "Too many sign-in attempts. Please wait a moment." },
+      { status: 429 }
+    );
+  }
+
   const body = await req.json().catch(() => null);
   const idToken = body?.idToken;
   if (!idToken || typeof idToken !== "string") {

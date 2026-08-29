@@ -3,10 +3,8 @@ import { z } from "zod";
 import { Resend } from "resend";
 import { FieldValue } from "firebase-admin/firestore";
 import { getDb, getAdminAuth } from "@/lib/firebaseAdmin";
+import { checkRateLimit } from "@/lib/rateLimit";
 
-// Basic in-memory rate limit (per server instance). Good enough to stop
-// accidental double-submits and light abuse; not a substitute for a WAF.
-const recentSubmissions = new Map<string, number>();
 const RATE_LIMIT_WINDOW_MS = 60_000;
 
 const ReservationSchema = z.object({
@@ -48,8 +46,11 @@ export async function POST(req: NextRequest) {
   }
 
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-  const lastSubmit = recentSubmissions.get(ip);
-  if (lastSubmit && Date.now() - lastSubmit < RATE_LIMIT_WINDOW_MS) {
+  const { allowed } = await checkRateLimit(`reservation:${ip}`, {
+    windowMs: RATE_LIMIT_WINDOW_MS,
+    maxRequests: 1,
+  });
+  if (!allowed) {
     return NextResponse.json(
       { error: "Please wait a moment before submitting again." },
       { status: 429 }
@@ -110,7 +111,6 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    recentSubmissions.set(ip, Date.now());
     return NextResponse.json({ ok: true, id: docRef.id }, { status: 201 });
   } catch (err) {
     console.error("Reservation submission failed:", err);
