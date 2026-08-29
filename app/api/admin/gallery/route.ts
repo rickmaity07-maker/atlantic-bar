@@ -4,22 +4,27 @@ import { FieldValue } from "firebase-admin/firestore";
 import { getAdminSession } from "@/lib/adminAuth";
 import { getDb } from "@/lib/firebaseAdmin";
 
-const GalleryItemUpdateSchema = z.object({
+const GalleryItemSchema = z.object({
   label: z.string().trim().min(1).max(60),
   imageUrl: z.string().trim().url(),
   span: z.enum(["normal", "wide", "large"]).default("normal"),
   order: z.coerce.number().int().default(0),
 });
 
-export async function PATCH(
-  req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
+export async function GET() {
   const session = await getAdminSession();
   if (!session) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
 
-  const { id } = await params;
-  const parsed = GalleryItemUpdateSchema.safeParse(await req.json().catch(() => null));
+  const snap = await getDb().collection("galleryImages").orderBy("order", "asc").get();
+  const items = snap.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+  return NextResponse.json({ items });
+}
+
+export async function POST(req: NextRequest) {
+  const session = await getAdminSession();
+  if (!session) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+
+  const parsed = GalleryItemSchema.safeParse(await req.json().catch(() => null));
   if (!parsed.success) {
     return NextResponse.json(
       { error: parsed.error.issues[0]?.message ?? "Invalid input." },
@@ -27,21 +32,10 @@ export async function PATCH(
     );
   }
 
-  await getDb()
-    .collection("galleryImages")
-    .doc(id)
-    .set({ ...parsed.data, updatedAt: FieldValue.serverTimestamp() }, { merge: true });
-  return NextResponse.json({ ok: true });
-}
-
-export async function DELETE(
-  _req: NextRequest,
-  { params }: { params: Promise<{ id: string }> }
-) {
-  const session = await getAdminSession();
-  if (!session) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
-
-  const { id } = await params;
-  await getDb().collection("galleryImages").doc(id).delete();
-  return NextResponse.json({ ok: true });
+  const docRef = await getDb().collection("galleryImages").add({
+    ...parsed.data,
+    createdAt: FieldValue.serverTimestamp(),
+    updatedAt: FieldValue.serverTimestamp(),
+  });
+  return NextResponse.json({ ok: true, id: docRef.id }, { status: 201 });
 }

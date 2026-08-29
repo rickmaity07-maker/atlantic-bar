@@ -15,7 +15,7 @@ interface Drink {
 }
 
 // Shown until (or unless) the client has added their own items in the
-// admin dashboard — the site never shows an empty menu.
+// admin dashboard â€” the site never shows an empty menu.
 const DEFAULT_DRINKS: Drink[] = [
   {
     name: "Gilded Old Fashioned",
@@ -49,7 +49,7 @@ export default function Cocktails() {
         }
       })
       .catch(() => {
-        // Keep the defaults on any failure — never show a broken/empty menu.
+        // Keep the defaults on any failure â€” never show a broken/empty menu.
       });
   }, []);
 
@@ -77,7 +77,7 @@ export default function Cocktails() {
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                   sizes="(min-width: 768px) 33vw, 100vw"
                 />
-                <div className="absolute inset-0 bg-linear-to-t from-obsidian via-obsidian/10 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/10 to-transparent" />
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gold/10" />
               </div>
               <div className="p-7">
@@ -88,7 +88,7 @@ export default function Cocktails() {
                 <p className="text-smoke text-sm mt-3 leading-relaxed">{d.note}</p>
               </div>
               <span className="absolute top-4 right-4 h-8 w-8 rounded-full border border-gold/40 bg-obsidian/60 backdrop-blur flex items-center justify-center text-gold text-xs opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                ✦
+                âœ¦
               </span>
             </motion.div>
           ))}

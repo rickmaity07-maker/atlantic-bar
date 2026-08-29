@@ -150,7 +150,7 @@ export default function AdminDashboard({
             disabled={loggingOut}
             className="text-xs tracking-[0.2em] uppercase text-smoke hover:text-gold-bright transition-colors disabled:opacity-50"
           >
-            {loggingOut ? "Signing out…" : "Sign Out"}
+            {loggingOut ? "Signing outâ€¦" : "Sign Out"}
           </button>
         </div>
 
@@ -175,10 +175,10 @@ export default function AdminDashboard({
         <div className="flex flex-wrap items-center gap-3 mb-6">
           <input
             type="text"
-            placeholder="Search by name…"
+            placeholder="Search by nameâ€¦"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="bg-charcoal/50 border border-cream/20 focus:border-gold px-4 py-2 text-sm text-cream outline-none flex-1 min-w-45"
+            className="bg-charcoal/50 border border-cream/20 focus:border-gold px-4 py-2 text-sm text-cream outline-none flex-1 min-w-[180px]"
           />
           <select
             value={statusFilter}
@@ -194,14 +194,14 @@ export default function AdminDashboard({
             onClick={() => setSortAsc((s) => !s)}
             className="text-xs tracking-[0.15em] uppercase text-smoke hover:text-gold-bright border border-cream/20 px-4 py-2"
           >
-            Date {sortAsc ? "↑" : "↓"}
+            Date {sortAsc ? "â†‘" : "â†“"}
           </button>
           <button
             onClick={refresh}
             disabled={refreshing}
             className="text-xs tracking-[0.15em] uppercase text-smoke hover:text-gold-bright border border-cream/20 px-4 py-2 disabled:opacity-50"
           >
-            {refreshing ? "Refreshing…" : "Refresh"}
+            {refreshing ? "Refreshingâ€¦" : "Refresh"}
           </button>
           <button
             onClick={exportCsv}
@@ -244,7 +244,7 @@ export default function AdminDashboard({
                     </select>
                   </td>
                   <td className="px-4 py-3 text-smoke text-xs">
-                    {r.createdAt ? new Date(r.createdAt).toLocaleString() : "—"}
+                    {r.createdAt ? new Date(r.createdAt).toLocaleString() : "â€”"}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <button
