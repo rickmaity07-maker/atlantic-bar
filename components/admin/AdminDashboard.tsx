@@ -1,7 +1,8 @@
-"use client";
+﻿"use client";
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
+import AdminSubNav from "./AdminSubNav";
 
 export type ReservationStatus = "pending" | "confirmed" | "cancelled";
 
@@ -153,6 +154,8 @@ export default function AdminDashboard({
           </button>
         </div>
 
+        <AdminSubNav />
+
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
           {[
             { label: "Total Reservations", value: stats.total },
@@ -175,7 +178,7 @@ export default function AdminDashboard({
             placeholder="Search by name…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="bg-charcoal/50 border border-cream/20 focus:border-gold px-4 py-2 text-sm text-cream outline-none flex-1 min-w-[180px]"
+            className="bg-charcoal/50 border border-cream/20 focus:border-gold px-4 py-2 text-sm text-cream outline-none flex-1 min-w-45"
           />
           <select
             value={statusFilter}
