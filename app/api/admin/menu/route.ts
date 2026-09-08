@@ -1,0 +1,106 @@
+import { NextRequest, NextResponse } from "next/server";
+import { FieldValue } from "firebase-admin/firestore";
+import { getAdminSession } from "@/lib/adminAuth";
+import { getDb } from "@/lib/firebaseAdmin";
+import { DEFAULT_ITEMS, type MenuCategory } from "@/lib/defaultMenu";
+
+const CATEGORIES: MenuCategory[] = [
+  "signature",
+  "classics",
+  "spirits",
+  "wine",
+  "champagne",
+  "nonAlcoholic",
+  "barSnacks",
+];
+
+function slug(value: string) {
+  return value.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+}
+function makeId(category: string, name: string) {
+  return `${slug(category)}-${slug(name)}`;
+}
+
+async function getMergedItems() {
+  const snap = await getDb().collection("menuItems").get();
+  const overrides = new Map(snap.docs.map((doc) => [doc.id, { id: doc.id, ...doc.data() }]));
+  const items: Record<string, unknown>[] = [];
+
+  for (const category of CATEGORIES) {
+    for (const [index, base] of DEFAULT_ITEMS[category].entries()) {
+      const id = makeId(category, base.name);
+      const override = overrides.get(id) as Record<string, unknown> | undefined;
+      if (override?.hidden === true) continue;
+      items.push({
+        id,
+        category,
+        name: override?.name ?? base.name,
+        note: override?.note ?? base.note,
+        price: override?.price ?? base.price,
+        imageUrl: override?.imageUrl ?? base.imageUrl,
+        order: Number(override?.order ?? index),
+      });
+      overrides.delete(id);
+    }
+  }
+
+  for (const [id, item] of overrides) {
+    if (item.hidden === true) continue;
+    items.push({
+      id,
+      category: CATEGORIES.includes(item.category as MenuCategory) ? item.category : "signature",
+      name: item.name ?? "",
+      note: item.note ?? "",
+      price: item.price ?? "",
+      imageUrl: item.imageUrl ?? "",
+      order: Number(item.order ?? 999),
+    });
+  }
+
+  return items;
+}
+
+function validCategory(value: unknown): value is MenuCategory {
+  return typeof value === "string" && CATEGORIES.includes(value as MenuCategory);
+}
+
+export async function GET() {
+  const session = await getAdminSession();
+  if (!session) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+  return NextResponse.json({ items: await getMergedItems() });
+}
+
+export async function POST(req: NextRequest) {
+  const session = await getAdminSession();
+  if (!session) return NextResponse.json({ error: "Unauthorized." }, { status: 401 });
+
+  const body = await req.json().catch(() => null);
+  const category = body?.category;
+  const name = String(body?.name ?? "").trim();
+  const note = String(body?.note ?? "").trim();
+  const price = String(body?.price ?? "").trim();
+  const imageUrl = String(body?.imageUrl ?? "").trim();
+  const order = Number(body?.order ?? 0);
+
+  if (!validCategory(category) || !name || !note || !price || !imageUrl || !Number.isInteger(order)) {
+    return NextResponse.json({ error: "Please complete all menu fields." }, { status: 400 });
+  }
+
+  const id = makeId(category, name);
+  await getDb().collection("menuItems").doc(id).set(
+    {
+      category,
+      name,
+      note,
+      price,
+      imageUrl,
+      order,
+      hidden: false,
+      updatedAt: FieldValue.serverTimestamp(),
+      updatedBy: session.uid,
+    },
+    { merge: true }
+  );
+
+  return NextResponse.json({ ok: true, id }, { status: 201 });
+}
