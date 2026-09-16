@@ -45,7 +45,7 @@ export default function Hero() {
             className="relative w-full max-w-[320px] sm:max-w-[400px] md:max-w-[480px] aspect-[2.3/1] mb-2"
           >
             <Image
-              src="/atlantic-logo-gold.jpg"
+              src="/hero-logo-gold.png"
               alt="Atlantic Lounge Bar - Luxury Vibes & Premium Nights"
               fill
               priority
