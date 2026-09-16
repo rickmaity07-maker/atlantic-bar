@@ -54,25 +54,20 @@ export default function Hero() {
           </motion.div>
 
           {/* Reserve & Discover Buttons */}
-          <motion.div
-            initial={{ opacity: 0, y: 16 }}
+        <motion.div
+            initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.9, delay: 3.2 }}
-            className="mt-8 flex flex-col sm:flex-row items-center gap-4"
+            transition={{ duration: 1.2, delay: 2.4, ease: [0.22, 1, 0.36, 1] }}
+            className="relative w-full max-w-[320px] sm:max-w-[400px] md:max-w-[480px] aspect-[2.3/1] mb-2"
           >
-            <a
-              href="#reserve"
-              className="group relative overflow-hidden border border-gold px-9 py-3.5 text-xs tracking-[0.3em] uppercase text-obsidian bg-gold"
-            >
-              <span className="relative z-10">{t.hero.reserveBtn}</span>
-              <span className="absolute inset-0 bg-gold-bright scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500" />
-            </a>
-            <a
-              href="#about"
-              className="px-9 py-3.5 text-xs tracking-[0.3em] uppercase text-cream/80 border border-cream/25 hover:border-gold/70 hover:text-gold-bright transition-colors duration-300"
-            >
-              {t.hero.discoverBtn}
-            </a>
+            <Image
+              src="/hero-logo-gold.png" 
+              alt="Atlantic Lounge Bar - Luxury Vibes & Premium Nights"
+              fill
+              priority
+              unoptimized /* <--- ADD THIS EXACTLY HERE */
+              className="object-contain" 
+            />
           </motion.div>
         </div>
 
