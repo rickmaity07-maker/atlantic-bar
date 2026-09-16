@@ -68,7 +68,7 @@ export default function Hero() {
               unoptimized /* <--- ADD THIS EXACTLY HERE */
               className="object-contain" 
             />
-          </motion.div>
+          </motion.div> 
         </div>
 
         {/* RIGHT SIDE: Re-Opening Info & Specials Box */}
