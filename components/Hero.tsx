@@ -5,13 +5,13 @@ import { motion } from "framer-motion";
 import { useSiteImages } from "@/app/context/SiteImagesContext";
 import { useLanguage } from "@/app/context/LanguageContext";
 
-const WORD = "ATLANTIC";
-
 export default function Hero() {
   const { t } = useLanguage();
   const siteImages = useSiteImages();
+  
   return (
     <section id="top" className="relative h-svh min-h-155 w-full overflow-hidden">
+      {/* BACKGROUNDS */}
       <motion.div
         initial={{ scale: 1.18 }}
         animate={{ scale: 1 }}
@@ -31,92 +31,149 @@ export default function Hero() {
       <div className="absolute inset-0 bg-linear-to-b from-obsidian/80 via-obsidian/55 to-obsidian" />
       <div className="absolute inset-0 bg-linear-to-t from-obsidian via-transparent to-obsidian/40" />
 
-      <div className="relative z-10 h-full flex flex-col items-center justify-center px-6 text-center">
-        <motion.svg
-          initial={{ opacity: 0, y: -14 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 2.3 }}
-          width="46"
-          height="36"
-          viewBox="0 0 34 26"
-          fill="none"
-          className="text-gold mb-4"
-        >
-          <path
-            d="M2 8L9 14L17 3L25 14L32 8L29 22H5L2 8Z"
-            stroke="currentColor"
-            strokeWidth="1.3"
-            strokeLinejoin="round"
-          />
-        </motion.svg>
+      {/* CONTENT GRID */}
+      <div className="relative z-10 h-full w-full max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 items-center pt-24 pb-16 px-6 lg:px-12 overflow-y-auto">
+        
+        {/* LEFT SIDE: Image Logo & Brand */}
+        <div className="flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gold/20 pb-10 md:pb-0 md:pr-8 lg:pr-12">
+          
+          {/* New Image Logo with smooth fade-up transition */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: 2.4, ease: [0.22, 1, 0.36, 1] }}
+            className="relative w-full max-w-[320px] sm:max-w-[400px] md:max-w-[480px] aspect-[2.3/1] mb-2"
+          >
+            <Image
+              src="/atlantic-logo-gold.jpg"
+              alt="Atlantic Lounge Bar - Luxury Vibes & Premium Nights"
+              fill
+              priority
+              className="object-contain mix-blend-screen" 
+            />
+          </motion.div>
 
-        <h1 className="font-display font-extrabold uppercase leading-[0.95] text-gradient-gold flex flex-wrap justify-center text-[15vw] sm:text-[10vw] md:text-[7.2vw]">
-          {WORD.split("").map((letter, i) => (
-            <motion.span
-              key={i}
-              initial={{ opacity: 0, y: 40 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 2.4 + i * 0.045, ease: [0.22, 1, 0.36, 1] }}
-              className="inline-block"
+          {/* Reserve & Discover Buttons */}
+          <motion.div
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 3.2 }}
+            className="mt-8 flex flex-col sm:flex-row items-center gap-4"
+          >
+            <a
+              href="#reserve"
+              className="group relative overflow-hidden border border-gold px-9 py-3.5 text-xs tracking-[0.3em] uppercase text-obsidian bg-gold"
             >
-              {letter}
-            </motion.span>
-          ))}
-        </h1>
+              <span className="relative z-10">{t.hero.reserveBtn}</span>
+              <span className="absolute inset-0 bg-gold-bright scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500" />
+            </a>
+            <a
+              href="#about"
+              className="px-9 py-3.5 text-xs tracking-[0.3em] uppercase text-cream/80 border border-cream/25 hover:border-gold/70 hover:text-gold-bright transition-colors duration-300"
+            >
+              {t.hero.discoverBtn}
+            </a>
+          </motion.div>
+        </div>
 
-        <motion.h2
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 3.0 }}
-          className="font-display uppercase tracking-[0.5em] text-cream/90 text-sm sm:text-lg md:text-xl mt-3 -mb-1"
-        >
-          Lounge <span className="text-gold">{t.hero.subtitleBar}</span>
-        </motion.h2>
-
-        <motion.p
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 3.25 }}
-          className="font-script text-2xl sm:text-3xl md:text-4xl text-gold-bright mt-5"
-        >
-          {t.hero.tagline}
-        </motion.p>
-
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 3.5 }}
-          className="mt-10 flex flex-col sm:flex-row items-center gap-4"
-        >
-          <a
-            href="#reserve"
-            className="group relative overflow-hidden border border-gold px-9 py-3.5 text-xs tracking-[0.3em] uppercase text-obsidian bg-gold"
+        {/* RIGHT SIDE: Re-Opening Info & Specials Box */}
+        <div className="flex flex-col items-center justify-center text-center pt-10 md:pt-0 md:pl-8 lg:pl-12">
+          
+          {/* Top Text */}
+          <motion.h2
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9, delay: 2.8 }}
+            className="text-2xl sm:text-3xl lg:text-4xl font-bold uppercase tracking-[0.15em] text-gold-bright mb-6"
           >
-            <span className="relative z-10">{t.hero.reserveBtn}</span>
-            <span className="absolute inset-0 bg-gold-bright scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-500" />
-          </a>
-          <a
-            href="#about"
-            className="px-9 py-3.5 text-xs tracking-[0.3em] uppercase text-cream/80 border border-cream/25 hover:border-gold/70 hover:text-gold-bright transition-colors duration-300"
+            Weiter für Euch Offen!
+          </motion.h2>
+          
+          <motion.p
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9, delay: 3.0 }}
+            className="text-base sm:text-lg text-cream/90 mb-4 font-light tracking-wide"
           >
-            {t.hero.discoverBtn}
-          </a>
-        </motion.div>
+            ATLANTIC LOUNGE BAR ist wieder da
+          </motion.p>
+          
+          <motion.p
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9, delay: 3.2 }}
+            className="text-lg sm:text-xl lg:text-2xl font-medium mb-6 text-white"
+          >
+            Ab <span className="text-gold-bright font-semibold">22.08.2026</span> — Täglich ab <span className="text-gold-bright font-semibold">09:00 Uhr</span>
+          </motion.p>
+          
+          <motion.p
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.9, delay: 3.4 }}
+            className="text-[10px] sm:text-xs text-smoke uppercase tracking-[0.25em]"
+          >
+            Weiter für Euch offen ab 09:00 Uhr
+          </motion.p>
+
+          {/* Offers Box */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.9, delay: 3.6 }}
+            className="mt-8 border border-gold/40 rounded-lg p-6 w-full max-w-[420px] bg-obsidian/40 backdrop-blur-sm"
+          >
+            <h3 className="text-lg md:text-xl font-semibold uppercase tracking-[0.15em] text-gold-bright mb-4">
+              Aktuelle Angebote & Aktionen
+            </h3>
+            <p className="text-sm font-serif-alt italic text-cream/90 mb-5">
+              Luxury Vibes & Premium Nights
+            </p>
+            <p className="text-xs md:text-sm text-cream/70 uppercase tracking-wider leading-relaxed mb-6">
+              MIT VIELEN GUTEN NEUEN ANGEBOTEN FÜR ALLE GETRÄNKE<br />
+              UND SPAẞ WIE IMMER zusammen mit gute Vibes
+            </p>
+            
+            <ul className="space-y-4 text-sm md:text-base text-cream/90 font-medium text-left inline-block w-full px-2 sm:px-6">
+              <li className="flex items-center gap-3">
+                <span className="text-gold-bright font-bold">2 BIER bestellen</span> das 3. von uns!
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="text-gold-bright font-bold">1 SHOT plus</span> 1 von uns!
+              </li>
+              <li className="flex items-center gap-3">
+                <span className="text-gold-bright font-bold">2 VODKA Mische</span> eine plus!
+              </li>
+            </ul>
+            
+            <p className="text-xs text-cream/70 font-semibold mt-6">
+              Und viele weitere Angebote noch!
+            </p>
+
+            <p className="text-[11px] md:text-xs font-serif-alt italic text-gold-faded mt-3 leading-relaxed">
+              Auch wie jedes Mal für die schönste Nächte zusammen zum Erleben.
+            </p>
+          </motion.div>
+
+        </div>
+
       </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 3.9, duration: 1 }}
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-2"
-      >
-        <span className="text-[10px] tracking-[0.35em] uppercase text-smoke">{t.hero.scroll}</span>
-        <motion.span
-          animate={{ y: [0, 10, 0] }}
-          transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-          className="h-8 w-px bg-linear-to-b from-gold to-transparent"
-        />
-      </motion.div>
+      {/* New Transparent PNG Logo */}
+          <motion.div
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: 2.4, ease: [0.22, 1, 0.36, 1] }}
+            className="relative w-full max-w-[320px] sm:max-w-[400px] md:max-w-[480px] aspect-[2.3/1] mb-2"
+          >
+            <Image
+              src="/atlantic-logo-gold.png" /* Make sure this is .png! */
+              alt="Atlantic Lounge Bar - Luxury Vibes & Premium Nights"
+              fill
+              priority
+              className="object-contain" 
+            />
+          </motion.div>
     </section>
   );
 }

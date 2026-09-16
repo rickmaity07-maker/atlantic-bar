@@ -45,11 +45,23 @@ export default function Footer() {
             {t.footer.visit}
           </p>
           <ul className="space-y-1.5 text-sm text-smoke">
-            <li>21 Harbourfront Row</li>
-            <li>Old Quarter District</li>
-            <li>reservations@atlanticlounge.bar</li>
-            <li>+1 (555) 019 2247</li>
+            <li className="font-semibold text-white">ATLANTIC LOUNGE - BAR</li>
+            <li>Bauerngasse 67</li>
+            <li>97421 Schweinfurt</li>
+            <li className="pt-2">
+              TEL:{' '}
+              <a href="tel:015226750000" className="hover:text-gold-bright transition-colors">
+                015226750000
+              </a>
+            </li>
+            <li>
+              Email:{' '}
+              <a href="mailto:atlanticbarschweinfurt@gmail.com" className="hover:text-gold-bright transition-colors">
+                atlanticbarschweinfurt@gmail.com
+              </a>
+            </li>
           </ul>
+          
         </div>
 
        <div>
@@ -87,7 +99,7 @@ export default function Footer() {
             </li>
           </ul>
         </div>
-      </div> {/* <-- Make sure you have this final closing div if it's nested! */}
+      </div>
 
       <div className="hairline mx-auto max-w-7xl mt-12 mb-6" />
 
