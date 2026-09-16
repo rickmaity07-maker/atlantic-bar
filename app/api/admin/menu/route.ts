@@ -4,6 +4,8 @@ import { getAdminSession } from "@/lib/adminAuth";
 import { getDb } from "@/lib/firebaseAdmin";
 import { DEFAULT_ITEMS, type MenuCategory } from "@/lib/defaultMenu";
 
+type MenuOverride = Record<string, unknown> & { id: string };
+
 const CATEGORIES: MenuCategory[] = [
   "signature",
   "classics",
@@ -23,13 +25,15 @@ function makeId(category: string, name: string) {
 
 async function getMergedItems() {
   const snap = await getDb().collection("menuItems").get();
-  const overrides = new Map(snap.docs.map((doc) => [doc.id, { id: doc.id, ...doc.data() }]));
+  const overrides = new Map<string, MenuOverride>(
+    snap.docs.map((doc): [string, MenuOverride] => [doc.id, { ...doc.data(), id: doc.id }])
+  );
   const items: Record<string, unknown>[] = [];
 
   for (const category of CATEGORIES) {
     for (const [index, base] of DEFAULT_ITEMS[category].entries()) {
       const id = makeId(category, base.name);
-      const override = overrides.get(id) as Record<string, unknown> | undefined;
+      const override = overrides.get(id);
       if (override?.hidden === true) continue;
       items.push({
         id,

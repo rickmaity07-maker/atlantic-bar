@@ -36,6 +36,17 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Your sign-in has expired — please sign in again." }, { status: 401 });
   }
 
+  // Google/Facebook accounts must have completed phone verification to book.
+  const signInProvider = decoded.firebase?.sign_in_provider;
+  const isOAuthAccount =
+    signInProvider === "google.com" || signInProvider === "facebook.com";
+  if (isOAuthAccount && !decoded.phone_number) {
+    return NextResponse.json(
+      { error: "Please verify your phone number before requesting a table." },
+      { status: 403 }
+    );
+  }
+
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
   const lastSubmit = recentSubmissions.get(ip);
   if (lastSubmit && Date.now() - lastSubmit < RATE_LIMIT_WINDOW_MS) {

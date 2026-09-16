@@ -16,7 +16,7 @@ export interface DefaultMenuItem {
   imageUrl: string;
 }
 
-export const DEFAULT_ITEMS: Record<TabKey, MenuItem[]> = {
+export const DEFAULT_ITEMS: Record<MenuCategory, DefaultMenuItem[]> = {
   signature: [
     { name: "Gilded Old Fashioned", note: "Bourbon, bitters, torched orange oil, single ice sphere.", price: "18", imageUrl: PHOTOS.whiskeyIce },
     { name: "Atlantic Amber", note: "Aged rum, honey, smoked cinnamon, a slow amber pour.", price: "20", imageUrl: PHOTOS.heroPour },

@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getSession, isAdminEmail } from "@/lib/adminAuth";
+import { getSession } from "@/lib/adminAuth";
 import { getDb } from "@/lib/firebaseAdmin";
 
 /** Lets the client (Nav, AuthContext) find out its own role + phone-verified state. */
@@ -14,7 +14,7 @@ export async function GET() {
     user: {
       uid: session.uid,
       email: session.email,
-      role: isAdminEmail(session.email) ? "admin" : "user",
+      role: data?.role === "admin" ? "admin" : "user",
       phoneVerified: data?.phoneVerified === true,
     },
   });

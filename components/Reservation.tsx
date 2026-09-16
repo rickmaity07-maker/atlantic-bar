@@ -9,7 +9,7 @@ import { useLanguage } from "@/app/context/LanguageContext";
 import Link from "next/link";
 
 export default function Reservation() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, needsPhoneVerification } = useAuth();
   const siteImages = useSiteImages();
   const { t } = useLanguage();
   const [sent, setSent] = useState(false);
@@ -97,6 +97,22 @@ export default function Reservation() {
               className="inline-block border border-gold px-10 py-3.5 text-xs tracking-[0.3em] uppercase text-obsidian bg-gold hover:bg-gold-bright transition-colors"
             >
               {t.reservation.signInBtn}
+            </Link>
+          </motion.div>
+        ) : needsPhoneVerification ? (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="mt-12 bg-charcoal/70 backdrop-blur border border-gold/25 p-8 md:p-10 text-center"
+          >
+            <p className="text-cream mb-6">{t.reservation.verifyPrompt}</p>
+            <Link
+              href="/login/verify-phone"
+              className="inline-block border border-gold px-10 py-3.5 text-xs tracking-[0.3em] uppercase text-obsidian bg-gold hover:bg-gold-bright transition-colors"
+            >
+              {t.reservation.verifyBtn}
             </Link>
           </motion.div>
         ) : (

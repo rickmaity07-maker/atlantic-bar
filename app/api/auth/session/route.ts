@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { FieldValue } from "firebase-admin/firestore";
 import { getAdminAuth, getDb } from "@/lib/firebaseAdmin";
-import { SESSION_COOKIE_NAME, SESSION_MAX_AGE_MS, isAdminEmail } from "@/lib/adminAuth";
+import { SESSION_COOKIE_NAME, SESSION_MAX_AGE_MS } from "@/lib/adminAuth";
 
 /**
  * Called once right after every sign-in — email/password, Google, or
@@ -38,7 +38,7 @@ export async function POST(req: NextRequest) {
     await userRef.set({
       email: decoded.email ?? null,
       displayName: decoded.name ?? null,
-      role: isAdminEmail(decoded.email) ? "admin" : "user",
+      role: "user",
       phoneNumber: decoded.phone_number ?? null,
       phoneVerified: phoneVerifiedNow,
       createdAt: FieldValue.serverTimestamp(),
@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
         phoneNumber: decoded.phone_number ?? prev.phoneNumber ?? null,
         phoneVerified: phoneVerifiedNow || prev.phoneVerified === true,
         updatedAt: FieldValue.serverTimestamp(),
-        role: isAdminEmail(decoded.email) ? "admin" : "user",
+        // role deliberately omitted so a hand-set "admin" survives re-login
       },
       { merge: true }
     );
@@ -66,7 +66,7 @@ export async function POST(req: NextRequest) {
 
   const res = NextResponse.json({
     ok: true,
-    role: isAdminEmail(decoded.email) ? "admin" : "user",
+    role: profile?.role === "admin" ? "admin" : "user",
     phoneVerified: profile?.phoneVerified === true,
   });
   res.cookies.set(SESSION_COOKIE_NAME, sessionCookie, {

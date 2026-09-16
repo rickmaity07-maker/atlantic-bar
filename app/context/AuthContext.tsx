@@ -67,7 +67,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setProfile(null);
   }
 
-  const needsPhoneVerification = false;
+  // Google/Facebook accounts must link a phone number; email/password ones need not.
+  const isOAuthOnly =
+    !!user && user.providerData.every((p) => p.providerId !== "password");
+  const phoneConfirmed = profile?.phoneVerified === true || Boolean(user?.phoneNumber);
+  const needsPhoneVerification = isOAuthOnly && !phoneConfirmed;
 
   return (
     <AuthContext.Provider

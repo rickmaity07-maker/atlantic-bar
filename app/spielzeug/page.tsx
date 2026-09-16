@@ -39,6 +39,18 @@ const SPIELZEUG_ITEMS: SpielzeugItem[] = [
 
 export default function SpielzeugPage() {
   const { locale, t } = useLanguage();
+  const siteImages = useSiteImages();
+
+  // The seven admin-editable Spielzeug photos, cycled across the product grid.
+  const productImages = [
+    siteImages.spielzeug1,
+    siteImages.spielzeug2,
+    siteImages.spielzeug3,
+    siteImages.spielzeug4,
+    siteImages.spielzeug5,
+    siteImages.spielzeug6,
+    siteImages.spielzeug7,
+  ].filter(Boolean);
 
   return (
     <>
@@ -77,7 +89,11 @@ export default function SpielzeugPage() {
                 >
                   <div className="relative h-56 overflow-hidden">
                     <Image
-                      src={productImages[i % productImages.length] ?? item.imageUrl}
+                      src={
+                        productImages.length > 0
+                          ? productImages[i % productImages.length]
+                          : item.imageUrl
+                      }
                       alt={item.name}
                       fill
                       className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
