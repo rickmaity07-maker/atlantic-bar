@@ -31,7 +31,7 @@ export default function Testimonials() {
         <div className="absolute inset-0 bg-obsidian/85" />
       </div>
 
-      <div className="relative mx-auto max-w-3xl px-6 text-center min-h-[220px] flex flex-col items-center justify-center">
+      <div className="relative mx-auto max-w-3xl px-6 text-center min-h-55 flex flex-col items-center justify-center">
         <span className="font-display text-5xl text-gold/50 mb-4">&ldquo;</span>
         <AnimatePresence mode="wait">
           <motion.div

@@ -11,7 +11,7 @@ export default function Hero() {
   const { t } = useLanguage();
   const siteImages = useSiteImages();
   return (
-    <section id="top" className="relative h-[100svh] min-h-[620px] w-full overflow-hidden">
+    <section id="top" className="relative h-svh min-h-155 w-full overflow-hidden">
       <motion.div
         initial={{ scale: 1.18 }}
         animate={{ scale: 1 }}
@@ -28,8 +28,8 @@ export default function Hero() {
           sizes="100vw"
         />
       </motion.div>
-      <div className="absolute inset-0 bg-gradient-to-b from-obsidian/80 via-obsidian/55 to-obsidian" />
-      <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-transparent to-obsidian/40" />
+      <div className="absolute inset-0 bg-linear-to-b from-obsidian/80 via-obsidian/55 to-obsidian" />
+      <div className="absolute inset-0 bg-linear-to-t from-obsidian via-transparent to-obsidian/40" />
 
       <div className="relative z-10 h-full flex flex-col items-center justify-center px-6 text-center">
         <motion.svg
@@ -114,7 +114,7 @@ export default function Hero() {
         <motion.span
           animate={{ y: [0, 10, 0] }}
           transition={{ duration: 1.8, repeat: Infinity, ease: "easeInOut" }}
-          className="h-8 w-px bg-gradient-to-b from-gold to-transparent"
+          className="h-8 w-px bg-linear-to-b from-gold to-transparent"
         />
       </motion.div>
     </section>

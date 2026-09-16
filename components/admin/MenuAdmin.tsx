@@ -219,7 +219,7 @@ export default function MenuAdmin() {
           />
         </label>
 
-        <label className="block mb-6 max-w-[140px]">
+        <label className="block mb-6 max-w-35">
           <span className="text-[11px] tracking-[0.2em] uppercase text-smoke">Order</span>
           <input
             type="number"

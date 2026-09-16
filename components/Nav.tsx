@@ -83,7 +83,7 @@ export default function Nav() {
       }`}
     >
       <nav className="mx-auto max-w-7xl px-6 md:px-10 h-20 flex items-center justify-between gap-8">
-        <a href="#top" className="flex items-center gap-2 group flex-shrink-0">
+        <a href="#top" className="flex items-center gap-2 group shrink-0">
           <svg width="20" height="16" viewBox="0 0 34 26" fill="none" className="text-gold">
             <path
               d="M2 8L9 14L17 3L25 14L32 8L29 22H5L2 8Z"
@@ -105,7 +105,7 @@ export default function Nav() {
           ))}
         </ul>
 
-        <div className="hidden md:flex items-center gap-4 flex-shrink-0">
+        <div className="hidden md:flex items-center gap-4 shrink-0">
           <a
             href="#reserve"
             className="inline-flex items-center border border-gold/60 px-5 py-2 text-xs tracking-[0.2em] uppercase text-gold-bright hover:bg-gold hover:text-obsidian transition-colors duration-300"
@@ -247,7 +247,7 @@ export default function Nav() {
             )}
           </li>
           <li>
-            <LanguageToggle className="!text-sm" />
+            <LanguageToggle className="text-sm!" />
           </li>
         </motion.ul>
       )}

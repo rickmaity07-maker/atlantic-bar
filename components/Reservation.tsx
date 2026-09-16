@@ -73,7 +73,7 @@ export default function Reservation() {
           className="object-cover"
           sizes="100vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/85 to-obsidian/60" />
+        <div className="absolute inset-0 bg-linear-to-t from-obsidian via-obsidian/85 to-obsidian/60" />
       </div>
 
       <div className="relative mx-auto max-w-3xl px-6 md:px-10 text-center">
@@ -146,7 +146,7 @@ export default function Reservation() {
             name="company"
             tabIndex={-1}
             autoComplete="off"
-            className="absolute -left-[9999px] h-0 w-0 opacity-0"
+            className="absolute left-[-9999px] h-0 w-0 opacity-0"
             aria-hidden="true"
           />
 

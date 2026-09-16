@@ -23,7 +23,7 @@ export default function About() {
           transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
           className="relative"
         >
-          <div className="relative aspect-[4/5] overflow-hidden">
+          <div className="relative aspect-4/5 overflow-hidden">
             <Image
               src={siteImages.about}
               alt="The dimly lit bar counter and wooden floor of Atlantic Lounge"

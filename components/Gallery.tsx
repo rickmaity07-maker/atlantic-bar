@@ -70,7 +70,7 @@ export default function Gallery() {
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         <SectionHeading eyebrow={t.gallery.eyebrow} title={t.gallery.title} />
 
-        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 auto-rows-[180px] md:auto-rows-[160px] gap-4">
+        <div className="mt-16 grid grid-cols-2 md:grid-cols-4 auto-rows-45 md:auto-rows-40 gap-4">
           {shots.map((s, i) => (
             <motion.div
               key={s.id ?? s.label}
@@ -88,7 +88,7 @@ export default function Gallery() {
                 className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                 sizes="(min-width: 768px) 25vw, 50vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-obsidian/85 via-obsidian/10 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
+              <div className="absolute inset-0 bg-linear-to-t from-obsidian/85 via-obsidian/10 to-transparent opacity-70 group-hover:opacity-90 transition-opacity duration-500" />
               <div className="absolute inset-0 border border-transparent group-hover:border-gold/50 transition-colors duration-500" />
               <p className="absolute bottom-3 left-4 font-display text-xs sm:text-sm tracking-[0.2em] uppercase text-cream translate-y-2 opacity-0 group-hover:translate-y-0 group-hover:opacity-100 transition-all duration-500">
                 {s.label}

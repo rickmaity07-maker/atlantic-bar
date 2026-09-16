@@ -178,7 +178,7 @@ export default function AdminDashboard({
             placeholder="Search by name…"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="bg-charcoal/50 border border-cream/20 focus:border-gold px-4 py-2 text-sm text-cream outline-none flex-1 min-w-[180px]"
+            className="bg-charcoal/50 border border-cream/20 focus:border-gold px-4 py-2 text-sm text-cream outline-none flex-1 min-w-45"
           />
           <select
             value={statusFilter}

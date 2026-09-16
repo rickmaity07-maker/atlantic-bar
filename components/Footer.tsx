@@ -52,17 +52,42 @@ export default function Footer() {
           </ul>
         </div>
 
-        <div>
+       <div>
           <p className="text-[11px] tracking-[0.25em] uppercase text-gold-bright mb-4">
             {t.footer.follow}
           </p>
           <ul className="space-y-1.5 text-sm text-smoke">
-            <li className="hover:text-gold-bright transition-colors cursor-pointer">Instagram</li>
-            <li className="hover:text-gold-bright transition-colors cursor-pointer">Facebook</li>
-            <li className="hover:text-gold-bright transition-colors cursor-pointer">TikTok</li>
+            <li>
+              <a 
+                href="https://www.instagram.com/atlantic_bar_schweinfurt/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:text-gold-bright transition-colors cursor-pointer block"
+              >
+                Instagram
+              </a>
+            </li>
+            <li>
+              <a 
+                href="#" 
+                className="hover:text-gold-bright transition-colors cursor-pointer block"
+              >
+                Facebook
+              </a>
+            </li>
+            <li>
+              <a 
+                href="https://www.tiktok.com/@atlanticbarschweinfurt" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="hover:text-gold-bright transition-colors cursor-pointer block"
+              >
+                TikTok
+              </a>
+            </li>
           </ul>
         </div>
-      </div>
+      </div> {/* <-- Make sure you have this final closing div if it's nested! */}
 
       <div className="hairline mx-auto max-w-7xl mt-12 mb-6" />
 

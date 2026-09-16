@@ -130,7 +130,7 @@ export default function Cocktails() {
                   className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
                   sizes="(min-width: 768px) 33vw, 100vw"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-obsidian via-obsidian/10 to-transparent" />
+                <div className="absolute inset-0 bg-linear-to-t from-obsidian via-obsidian/10 to-transparent" />
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 bg-gold/10" />
               </div>
               <div className="p-7">
