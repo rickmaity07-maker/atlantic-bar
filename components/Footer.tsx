@@ -1,9 +1,13 @@
 "use client";
 
 import { useLanguage } from "@/app/context/LanguageContext";
+import { useBusinessHours } from "@/app/context/BusinessHoursContext";
+import { groupBusinessHours } from "@/lib/businessHours";
 
 export default function Footer() {
-  const { t } = useLanguage();
+  const { locale, t } = useLanguage();
+  const hours = useBusinessHours();
+  const hoursLines = groupBusinessHours(hours, locale);
 
   return (
     <footer className="relative bg-obsidian border-t border-gold/15 pt-16 pb-8">
@@ -30,7 +34,7 @@ export default function Footer() {
             {t.footer.hours}
           </p>
           <ul className="space-y-1.5 text-sm text-smoke">
-            {t.footer.hoursLines.map((line) => (
+            {hoursLines.map((line) => (
               <li key={line}>{line}</li>
             ))}
           </ul>

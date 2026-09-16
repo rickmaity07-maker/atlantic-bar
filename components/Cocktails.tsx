@@ -38,6 +38,12 @@ const DEFAULT_DRINKS_DE: Drink[] = [
     price: "19",
     imageUrl: PHOTOS.whiskeyOrange,
   },
+  {
+    name: "Midnight Sour",
+    note: "Roggenwhiskey, Brombeere, Zitrone, Eiweiß, Absinth-Nebel.",
+    price: "21",
+    imageUrl: PHOTOS.whiskeyBrown,
+  },
 ];
 
 const DEFAULT_DRINKS_EN: Drink[] = [
@@ -58,6 +64,12 @@ const DEFAULT_DRINKS_EN: Drink[] = [
     note: "Barrel-rested gin, sweet vermouth, bitter orange peel.",
     price: "19",
     imageUrl: PHOTOS.whiskeyOrange,
+  },
+  {
+    name: "Midnight Sour",
+    note: "Rye whiskey, blackberry, lemon, egg white, absinthe mist.",
+    price: "21",
+    imageUrl: PHOTOS.whiskeyBrown,
   },
 ];
 
@@ -98,8 +110,8 @@ export default function Cocktails() {
           </Link>
         </div>
 
-        <div className="mt-16 grid md:grid-cols-3 gap-8">
-          {drinks.map((d, i) => (
+        <div className="mt-16 grid sm:grid-cols-2 lg:grid-cols-4 gap-8">
+          {drinks.slice(0, 4).map((d, i) => (
             <motion.div
               key={d.id ?? d.name}
               initial={{ opacity: 0, y: 50 }}

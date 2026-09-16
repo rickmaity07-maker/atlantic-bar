@@ -3,6 +3,7 @@ import "./globals.css";
 import { AuthProvider } from "./context/AuthContext";
 import { LanguageProvider } from "./context/LanguageContext";
 import { SiteImagesProvider } from "./context/SiteImagesContext";
+import { BusinessHoursProvider } from "./context/BusinessHoursContext";
 
 export const metadata: Metadata = {
   title: "Atlantic Lounge Bar — Luxuriöses Ambiente & Premium-Abende",
@@ -24,7 +25,9 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <body className="min-h-full flex flex-col bg-obsidian text-cream font-body selection:bg-gold/30 selection:text-cream">
         <LanguageProvider>
           <AuthProvider>
-            <SiteImagesProvider>{children}</SiteImagesProvider>
+            <SiteImagesProvider>
+              <BusinessHoursProvider>{children}</BusinessHoursProvider>
+            </SiteImagesProvider>
           </AuthProvider>
         </LanguageProvider>
       </body>

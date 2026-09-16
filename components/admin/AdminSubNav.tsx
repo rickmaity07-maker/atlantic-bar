@@ -8,6 +8,7 @@ const TABS = [
   { href: "/admin/dashboard/menu", label: "Menu" },
   { href: "/admin/dashboard/gallery", label: "Gallery" },
   { href: "/admin/dashboard/images", label: "Images / 3D" },
+  { href: "/admin/dashboard/hours", label: "Hours" },
 ];
 
 export default function AdminSubNav() {
