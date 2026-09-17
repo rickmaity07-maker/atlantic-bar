@@ -219,13 +219,13 @@ const de: Dictionary = {
     eyebrow: "Unsere Karte",
     title: "Vollständige Speisekarte",
     tabs: {
-      signature: "Signature Drinks",
-      classics: "Klassiker",
+      signature: "Cocktails",
+      classics: "Bier",
       spirits: "Spirituosen",
       wine: "Wein",
       champagne: "Champagner",
-      nonAlcoholic: "Alkoholfrei",
-      barSnacks: "Bar Snacks",
+      nonAlcoholic: "Alkoholfrei & Café",
+      barSnacks: "Snacks",
     },
   },
   spielzeug: {
@@ -282,12 +282,7 @@ const de: Dictionary = {
   footer: {
     tagline: "Luxuriöses Ambiente & Premium-Abende",
     hours: "Öffnungszeiten",
-    hoursLines: [
-      "Di — Mi · 18 — 24 Uhr",
-      "Do — Sa · 18 — 2 Uhr",
-      "So · 17 — 22 Uhr",
-      "Mo · Geschlossen",
-    ],
+    hoursLines: ["So — Do · 09:00 — 01:00 Uhr", "Fr — Sa · 09:00 — 05:00 Uhr"],
     visit: "Besuchen Sie uns",
     follow: "Folgen Sie uns",
     copyright: "Atlantic Lounge Bar. Design-Mockup — nur zu Demonstrationszwecken.",
@@ -421,13 +416,13 @@ const en: Dictionary = {
     eyebrow: "Our Menu",
     title: "Full Menu",
     tabs: {
-      signature: "Signature Drinks",
-      classics: "Classics",
+      signature: "Cocktails",
+      classics: "Beer",
       spirits: "Spirits",
       wine: "Wine",
       champagne: "Champagne",
-      nonAlcoholic: "Non-Alcoholic",
-      barSnacks: "Bar Snacks",
+      nonAlcoholic: "Soft drinks & Coffee",
+      barSnacks: "Snacks",
     },
   },
   spielzeug: {
@@ -484,12 +479,7 @@ const en: Dictionary = {
   footer: {
     tagline: "Luxury Vibes & Premium Nights",
     hours: "Hours",
-    hoursLines: [
-      "Tue — Wed · 6 PM – 12 AM",
-      "Thu — Sat · 6 PM – 2 AM",
-      "Sun · 5 PM – 10 PM",
-      "Mon · Closed",
-    ],
+    hoursLines: ["Sun — Thu · 09:00 – 01:00", "Fri — Sat · 09:00 – 05:00"],
     visit: "Visit",
     follow: "Follow",
     copyright: "Atlantic Lounge Bar. Design mock — for demonstration purposes only.",

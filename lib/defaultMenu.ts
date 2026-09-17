@@ -16,61 +16,113 @@ export interface DefaultMenuItem {
   imageUrl: string;
 }
 
+/**
+ * Real Kaffee Bar Atlantic menu (from physical menu cards).
+ * Used as the built-in fallback and as the source for DB seed.
+ */
 export const DEFAULT_ITEMS: Record<MenuCategory, DefaultMenuItem[]> = {
-  signature: [
-    { name: "Gilded Old Fashioned", note: "Bourbon, bitters, torched orange oil, single ice sphere.", price: "18", imageUrl: PHOTOS.whiskeyIce },
-    { name: "Atlantic Amber", note: "Aged rum, honey, smoked cinnamon, a slow amber pour.", price: "20", imageUrl: PHOTOS.heroPour },
-    { name: "Velvet Negroni", note: "Barrel-rested gin, sweet vermouth, bitter orange peel.", price: "19", imageUrl: PHOTOS.whiskeyOrange },
-    { name: "Midnight Sour", note: "Rye whiskey, blackberry, lemon, egg white, absinthe mist.", price: "21", imageUrl: PHOTOS.whiskeyBrown },
-    { name: "Golden Hour", note: "Tequila, mango, lime, chili salt rim.", price: "18", imageUrl: PHOTOS.cocktailOlives },
-    { name: "Obsidian Martini", note: "Vodka, black olive brine, lemon twist.", price: "22", imageUrl: PHOTOS.whiskeyWhiteTable },
-  ],
-  classics: [
-    { name: "Classic Martini", note: "Gin or vodka, dry vermouth, olive or twist.", price: "18", imageUrl: PHOTOS.whiskeyWhiteTable },
-    { name: "Manhattan", note: "Rye, sweet vermouth, angostura, cherry.", price: "19", imageUrl: PHOTOS.whiskeyBrown },
-    { name: "Daiquiri", note: "White rum, lime, simple syrup.", price: "16", imageUrl: PHOTOS.cocktailOlives },
-    { name: "Old Fashioned", note: "Bourbon, sugar, bitters, orange peel.", price: "17", imageUrl: PHOTOS.whiskeyIce },
-    { name: "Negroni", note: "Gin, Campari, sweet vermouth, orange peel.", price: "18", imageUrl: PHOTOS.whiskeyOrange },
-    { name: "Margarita", note: "Tequila, Cointreau, lime, salt rim.", price: "17", imageUrl: PHOTOS.heroPour },
-  ],
-  spirits: [
-    { name: "Macallan 18", note: "Sherry oak, dried fruit, spice, long finish.", price: "45", imageUrl: PHOTOS.whiskeyWoodTable },
-    { name: "Yamazaki 12", note: "Japanese single malt, honey, coconut, cinnamon.", price: "38", imageUrl: PHOTOS.whiskeyWood2 },
-    { name: "Ron Zacapa 23", note: "Guatemalan rum, vanilla, caramel, oak.", price: "22", imageUrl: PHOTOS.whiskeyBrown },
-    { name: "Clase Azul Reposado", note: "Tequila, agave, vanilla, caramel.", price: "35", imageUrl: PHOTOS.whiskeyWhiteTable },
-    { name: "Hendrick's Gin", note: "Cucumber, rose, juniper, floral.", price: "16", imageUrl: PHOTOS.cocktailOlives },
-    { name: "Mezcal Vida", note: "Espadin agave, smoke, citrus, pepper.", price: "18", imageUrl: PHOTOS.whiskeyWoodTable },
-  ],
   wine: [
-    { name: "Châteauneuf-du-Pape", note: "Grenache blend, dark fruit, garrigue, structured.", price: "95", imageUrl: PHOTOS.whiskeyBrown },
-    { name: "Burgundy Pinot Noir", note: "Red cherry, earth, silk, elegant.", price: "120", imageUrl: PHOTOS.whiskeyWood2 },
-    { name: "Napa Cabernet", note: "Blackcurrant, cedar, vanilla, bold.", price: "85", imageUrl: PHOTOS.whiskeyWoodTable },
-    { name: "Chablis Grand Cru", note: "Green apple, chalk, citrus, precise.", price: "110", imageUrl: PHOTOS.whiskeyWhiteTable },
-    { name: "Riesling Spätlese", note: "Peach, honey, petrol, balanced sweetness.", price: "75", imageUrl: PHOTOS.whiskeyWhiteTable },
-    { name: "Champagne Brut", note: "Brioche, lemon, fine bubbles, crisp.", price: "140", imageUrl: PHOTOS.heroPour },
+    {
+      name: "Retsina Malamatina",
+      note: "0,5 l",
+      price: "8,00",
+      imageUrl: PHOTOS.whiskeyWhiteTable,
+    },
+    {
+      name: "Rosé",
+      note: "0,25 l",
+      price: "4,00",
+      imageUrl: PHOTOS.whiskeyOrange,
+    },
   ],
-  champagne: [
-    { name: "Dom Pérignon 2013", note: "Toast, citrus, white flower, mineral.", price: "380", imageUrl: PHOTOS.heroPour },
-    { name: "Krug Grande Cuvée", note: "Hazelnut, brioche, apple, endless finish.", price: "420", imageUrl: PHOTOS.whiskeyWhiteTable },
-    { name: "Veuve Clicquot Rosé", note: "Red berry, brioche, elegant pink.", price: "160", imageUrl: PHOTOS.whiskeyOrange },
-    { name: "Ruinart Blanc de Blancs", note: "Chardonnay, citrus, chalk, finesse.", price: "180", imageUrl: PHOTOS.whiskeyWhiteTable },
-    { name: "Billecart-Salmon Rosé", note: "Strawberry, citrus, delicate mousse.", price: "170", imageUrl: PHOTOS.whiskeyOrange },
-    { name: "Pol Roger Reserve", note: "Apple, honey, almond, classic.", price: "130", imageUrl: PHOTOS.heroPour },
+
+  spirits: [
+    { name: "Asbach", note: "Spirituose", price: "3,00", imageUrl: PHOTOS.whiskeyWoodTable },
+    { name: "Jack Daniel's", note: "Spirituose", price: "3,00", imageUrl: PHOTOS.whiskeyBrown },
+    { name: "Johnnie Walker", note: "Spirituose", price: "3,00", imageUrl: PHOTOS.whiskeyWood2 },
+    { name: "Wodka", note: "Spirituose", price: "3,00", imageUrl: PHOTOS.whiskeyWhiteTable },
+    { name: "Drambuie", note: "Spirituose", price: "3,00", imageUrl: PHOTOS.whiskeyOrange },
+    { name: "Havana", note: "Rum", price: "3,00", imageUrl: PHOTOS.heroPour },
+    { name: "Bacardi", note: "Rum", price: "3,00", imageUrl: PHOTOS.cocktailOlives },
+    { name: "Jägermeister", note: "Spirituose", price: "3,00", imageUrl: PHOTOS.whiskeyIce },
+    { name: "Ouzo", note: "Spirituose", price: "3,00", imageUrl: PHOTOS.whiskeyWoodTable },
+    { name: "Alle Kurzen", note: "0,2 l", price: "2,00", imageUrl: PHOTOS.whiskeyBrown },
+    { name: "Alle Longdrinks", note: "Longdrink", price: "6,00", imageUrl: PHOTOS.whiskeyOrange },
   ],
+
+  signature: [
+    {
+      name: "Alle Cocktails",
+      note: "Hauscocktails",
+      price: "7,00",
+      imageUrl: PHOTOS.heroPour,
+    },
+    {
+      name: "Aperol Spritz + Prosecco",
+      note: "Aperol, Prosecco",
+      price: "6,50",
+      imageUrl: PHOTOS.cocktailOlives,
+    },
+  ],
+
+  classics: [
+    { name: "Beck's Pils", note: "0,5 l", price: "3,50", imageUrl: PHOTOS.whiskeyIce },
+    { name: "Rothbier Hefe", note: "0,5 l", price: "3,50", imageUrl: PHOTOS.whiskeyOrange },
+    { name: "Rothbier Bleifrei", note: "0,5 l · alkoholfrei", price: "3,50", imageUrl: PHOTOS.whiskeyWhiteTable },
+    { name: "Radler", note: "0,5 l", price: "3,50", imageUrl: PHOTOS.cocktailOlives },
+    { name: "Corona", note: "0,35 l", price: "4,00", imageUrl: PHOTOS.whiskeyBrown },
+    { name: "Salitos", note: "0,33 l", price: "4,00", imageUrl: PHOTOS.whiskeyWood2 },
+  ],
+
+  champagne: [],
+
   nonAlcoholic: [
-    { name: "Virgin Gilded", note: "Non-alc bourbon, bitters, orange, ice sphere.", price: "12", imageUrl: PHOTOS.whiskeyIce },
-    { name: "Amber Zero", note: "Non-alc rum, honey, cinnamon, amber pour.", price: "13", imageUrl: PHOTOS.heroPour },
-    { name: "Botanical Spritz", note: "Non-alc aperitif, tonic, orange, herbs.", price: "11", imageUrl: PHOTOS.cocktailOlives },
-    { name: "Velvet Zero", note: "Non-alc gin, vermouth, orange, bitter.", price: "12", imageUrl: PHOTOS.whiskeyOrange },
-    { name: "Golden Fizz", note: "Mango, lime, chili, soda, salt rim.", price: "10", imageUrl: PHOTOS.whiskeyBrown },
-    { name: "Obsidian Tonic", note: "Activated charcoal, lime, tonic.", price: "11", imageUrl: PHOTOS.whiskeyWhiteTable },
+    { name: "Wasser still", note: "0,5 l", price: "1,50", imageUrl: PHOTOS.whiskeyWhiteTable },
+    { name: "Wasser spritzig", note: "0,4 l", price: "2,50", imageUrl: PHOTOS.whiskeyWhiteTable },
+    { name: "Coca Cola", note: "0,4 l", price: "2,50", imageUrl: PHOTOS.whiskeyBrown },
+    { name: "Orangenlimo", note: "0,5 l", price: "3,00", imageUrl: PHOTOS.whiskeyOrange },
+    { name: "Spezi", note: "0,5 l", price: "3,00", imageUrl: PHOTOS.cocktailOlives },
+    { name: "Orangensaft", note: "0,4 l", price: "2,50", imageUrl: PHOTOS.heroPour },
+    { name: "Red Bull", note: "Dose", price: "3,50", imageUrl: PHOTOS.whiskeyIce },
+    { name: "Frappé", note: "Café", price: "4,00", imageUrl: PHOTOS.woodenTable },
+    { name: "Freddo Espresso", note: "Café", price: "4,00", imageUrl: PHOTOS.woodenTable },
+    { name: "Freddo Cappuccino", note: "Café", price: "4,50", imageUrl: PHOTOS.woodenTable },
+    { name: "Cappuccino", note: "Café", price: "3,50", imageUrl: PHOTOS.woodenTable },
+    { name: "Espresso", note: "Café", price: "3,00", imageUrl: PHOTOS.woodenTable },
+    { name: "Café", note: "Café", price: "2,50", imageUrl: PHOTOS.woodenTable },
+    { name: "Latte Macchiato", note: "Café", price: "4,00", imageUrl: PHOTOS.woodenTable },
+    { name: "Milch Café", note: "Café", price: "3,50", imageUrl: PHOTOS.woodenTable },
+    { name: "Greek Moka klein", note: "Café", price: "2,50", imageUrl: PHOTOS.woodenTable },
+    { name: "Greek Moka groß", note: "Café", price: "3,50", imageUrl: PHOTOS.woodenTable },
   ],
-  barSnacks: [
-    { name: "Marinated Olives", note: "Castelvetrano, herbs, citrus, garlic.", price: "8", imageUrl: PHOTOS.cocktailOlives },
-    { name: "Truffle Nuts", note: "Mixed nuts, black truffle, sea salt.", price: "10", imageUrl: PHOTOS.whiskeyWoodTable },
-    { name: "Charcuterie Board", note: "Cured meats, cornichons, mustard, bread.", price: "28", imageUrl: PHOTOS.drinksTable },
-    { name: "Cheese Selection", note: "Three cheeses, honey, nuts, crackers.", price: "24", imageUrl: PHOTOS.woodenTable },
-    { name: "Oysters (6)", note: "Fresh, mignonette, lemon.", price: "32", imageUrl: PHOTOS.whiskeyWhiteTable },
-    { name: "Dark Chocolate", note: "70% cacao, sea salt, gold leaf.", price: "12", imageUrl: PHOTOS.cigarFire },
-  ],
+
+  barSnacks: [],
 };
+
+/** Flat list for seeding Firestore */
+export function getAllDefaultMenuItems() {
+  const categories: MenuCategory[] = [
+    "signature",
+    "classics",
+    "spirits",
+    "wine",
+    "champagne",
+    "nonAlcoholic",
+    "barSnacks",
+  ];
+  const items: {
+    category: MenuCategory;
+    name: string;
+    note: string;
+    price: string;
+    imageUrl: string;
+    order: number;
+  }[] = [];
+
+  for (const category of categories) {
+    DEFAULT_ITEMS[category].forEach((item, order) => {
+      items.push({ category, ...item, order });
+    });
+  }
+  return items;
+}
