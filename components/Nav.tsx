@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import Link from "next/link";
 import { useAuth } from "@/app/context/AuthContext";
 import { useLanguage } from "@/app/context/LanguageContext";
@@ -83,17 +84,16 @@ export default function Nav() {
       }`}
     >
       <nav className="mx-auto max-w-7xl px-6 md:px-10 h-20 flex items-center justify-between gap-8">
-        <a href="#top" className="flex items-center gap-2 group shrink-0">
-          <svg width="20" height="16" viewBox="0 0 34 26" fill="none" className="text-gold">
-            <path
-              d="M2 8L9 14L17 3L25 14L32 8L29 22H5L2 8Z"
-              stroke="currentColor"
-              strokeWidth="1.6"
-              strokeLinejoin="round"
+        <a href="#top" className="flex items-center shrink-0 group">
+          <span className="relative block h-10 w-[140px] sm:h-11 sm:w-[160px]">
+            <Image
+              src="/atlantic-logo-gold.png"
+              alt="Atlantic Lounge Bar"
+              fill
+              unoptimized
+              priority
+              className="object-contain object-left"
             />
-          </svg>
-          <span className="font-display tracking-[0.25em] text-sm sm:text-base uppercase text-cream group-hover:text-gold-bright transition-colors">
-            Atlantic <span className="text-gold">Lounge</span>
           </span>
         </a>
 
