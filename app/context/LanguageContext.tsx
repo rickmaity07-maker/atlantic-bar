@@ -9,7 +9,6 @@ interface LanguageContextValue {
   locale: Locale;
   setLocale: (l: Locale) => void;
   toggleLocale: () => void;
-  /** All strings for the current locale. */
   t: typeof translations.de;
 }
 
@@ -21,12 +20,20 @@ const LanguageContext = createContext<LanguageContextValue>({
 });
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  // German is the default/primary language, English is secondary.
   const [locale, setLocaleState] = useState<Locale>("de");
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const saved = window.localStorage.getItem(STORAGE_KEY);
-    if (saved === "de" || saved === "en") setLocaleState(saved);
+    if (saved === "en") {
+      setLocaleState("en");
+      document.documentElement.lang = "en";
+    } else {
+      setLocaleState("de");
+      document.documentElement.lang = "de";
+      if (saved !== "de") window.localStorage.setItem(STORAGE_KEY, "de");
+    }
+    setReady(true);
   }, []);
 
   function setLocale(l: Locale) {
@@ -39,8 +46,12 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     setLocale(locale === "de" ? "en" : "de");
   }
 
+  const active = ready ? locale : "de";
+
   return (
-    <LanguageContext.Provider value={{ locale, setLocale, toggleLocale, t: translations[locale] }}>
+    <LanguageContext.Provider
+      value={{ locale: active, setLocale, toggleLocale, t: translations[active] }}
+    >
       {children}
     </LanguageContext.Provider>
   );

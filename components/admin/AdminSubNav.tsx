@@ -2,17 +2,19 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useLanguage } from "@/app/context/LanguageContext";
 
 const TABS = [
-  { href: "/admin/dashboard", label: "Reservations" },
-  { href: "/admin/dashboard/menu", label: "Menu" },
-  { href: "/admin/dashboard/gallery", label: "Gallery" },
-  { href: "/admin/dashboard/images", label: "Images / 3D" },
-  { href: "/admin/dashboard/hours", label: "Hours" },
+  { href: "/admin/dashboard", labelDe: "Reservierungen", labelEn: "Reservations" },
+  { href: "/admin/dashboard/menu", labelDe: "Speisekarte", labelEn: "Menu" },
+  { href: "/admin/dashboard/gallery", labelDe: "Galerie", labelEn: "Gallery" },
+  { href: "/admin/dashboard/images", labelDe: "Bilder / 3D", labelEn: "Images / 3D" },
+  { href: "/admin/dashboard/hours", labelDe: "Öffnungszeiten", labelEn: "Hours" },
 ];
 
 export default function AdminSubNav() {
   const pathname = usePathname();
+  const { locale, t } = useLanguage();
 
   return (
     <div className="mb-10">
@@ -21,7 +23,7 @@ export default function AdminSubNav() {
           href="/"
           className="inline-flex items-center gap-2 text-xs tracking-[0.2em] uppercase text-smoke hover:text-gold-bright transition-colors"
         >
-          <span aria-hidden>←</span> Back to main page
+          <span aria-hidden>←</span> {t.common.backToMain}
         </Link>
       </div>
       <nav className="flex gap-2 border-b border-gold/15 overflow-x-auto">
@@ -37,7 +39,7 @@ export default function AdminSubNav() {
                   : "border-transparent text-smoke hover:text-cream"
               }`}
             >
-              {tab.label}
+              {locale === "de" ? tab.labelDe : tab.labelEn}
             </Link>
           );
         })}

@@ -27,21 +27,13 @@ function NavLink({ linkKey, href, children, onClick, className = "" }: { linkKey
   const baseClass = "relative text-xs tracking-[0.2em] uppercase text-smoke hover:text-gold-bright transition-colors after:content-[''] after:absolute after:left-0 after:-bottom-1 after:h-px after:w-0 after:bg-gold after:transition-all after:duration-300 hover:after:w-full";
   if (isAnchor) {
     return (
-      <a
-        href={href}
-        onClick={onClick}
-        className={`${baseClass} ${className}`}
-      >
+      <a href={href} onClick={onClick} className={`${baseClass} ${className}`}>
         {children}
       </a>
     );
   }
   return (
-    <Link
-      href={href}
-      onClick={onClick}
-      className={`${baseClass} ${className}`}
-    >
+    <Link href={href} onClick={onClick} className={`${baseClass} ${className}`}>
       {children}
     </Link>
   );
@@ -52,10 +44,12 @@ function LanguageToggle({ className = "" }: { className?: string }) {
   return (
     <button
       onClick={toggleLocale}
-      aria-label="Switch language"
+      aria-label={locale === "de" ? "Switch to English" : "Auf Deutsch umschalten"}
+      title={locale === "de" ? "English" : "Deutsch"}
       className={`text-xs tracking-[0.2em] uppercase text-smoke hover:text-gold-bright transition-colors ${className}`}
     >
-      {locale === "de" ? "DE" : "EN"} <span className="text-gold/50">/</span>{" "}
+      <span className="text-gold-bright">{locale === "de" ? "DE" : "EN"}</span>
+      <span className="text-gold/40"> / </span>
       <span className="text-smoke/50">{locale === "de" ? "EN" : "DE"}</span>
     </button>
   );
@@ -85,7 +79,7 @@ export default function Nav() {
     >
       <nav className="mx-auto max-w-7xl px-6 md:px-10 h-20 flex items-center justify-between gap-8">
         <a href="#top" className="flex items-center shrink-0 group">
-          <span className="relative block h-10 w-[140px] sm:h-11 sm:w-[160px]">
+          <span className="relative block h-10 w-35 sm:h-11 sm:w-40">
             <Image
               src="/atlantic-logo-gold.png"
               alt="Atlantic Lounge Bar"
@@ -116,24 +110,14 @@ export default function Nav() {
             user ? (
               <>
                 {isAdmin && (
-                  <Link
-                    href="/admin/dashboard"
-                    className="text-xs tracking-[0.2em] uppercase text-gold-bright hover:text-cream transition-colors"
-                  >
+                  <Link href="/admin/dashboard" className="text-xs tracking-[0.2em] uppercase text-gold-bright hover:text-cream transition-colors">
                     {t.nav.admin}
                   </Link>
                 )}
-                <Link
-                  href="/profile"
-                  className="text-xs tracking-[0.2em] uppercase text-smoke hover:text-gold-bright transition-colors"
-                >
-                  Profile
+                <Link href="/profile" className="text-xs tracking-[0.2em] uppercase text-smoke hover:text-gold-bright transition-colors">
+                  {t.nav.profile}
                 </Link>
-                <button
-                  onClick={() => signOut()}
-                  className="p-2 text-smoke hover:text-gold-bright transition-colors"
-                  aria-label={t.nav.signOut}
-                >
+                <button onClick={() => signOut()} className="p-2 text-smoke hover:text-gold-bright transition-colors" aria-label={t.nav.signOut}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                     <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
                     <polyline points="16 17 21 12 16 7" />
@@ -142,11 +126,7 @@ export default function Nav() {
                 </button>
               </>
             ) : (
-              <Link
-                href="/login"
-                className="p-2 text-smoke hover:text-gold-bright transition-colors"
-                aria-label={t.nav.signIn}
-              >
+              <Link href="/login" className="p-2 text-smoke hover:text-gold-bright transition-colors" aria-label={t.nav.signIn}>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
                   <polyline points="10 17 15 12 10 7" />
@@ -158,11 +138,7 @@ export default function Nav() {
           <LanguageToggle />
         </div>
 
-        <button
-          aria-label="Toggle menu"
-          onClick={() => setOpen((o) => !o)}
-          className="md:hidden text-gold-bright"
-        >
+        <button aria-label="Toggle menu" onClick={() => setOpen((o) => !o)} className="md:hidden text-gold-bright">
           <svg width="26" height="26" viewBox="0 0 24 24" fill="none">
             <path d="M4 7H20M4 12H20M4 17H20" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
           </svg>
@@ -178,22 +154,13 @@ export default function Nav() {
         >
           {NAV_LINKS.map((linkKey) => (
             <li key={linkKey}>
-              <NavLink
-                linkKey={linkKey}
-                href={LINK_HREFS[linkKey]}
-                onClick={() => setOpen(false)}
-                className="text-sm tracking-[0.2em] uppercase text-cream hover:text-gold-bright"
-              >
+              <NavLink linkKey={linkKey} href={LINK_HREFS[linkKey]} onClick={() => setOpen(false)} className="text-sm tracking-[0.2em] uppercase text-cream hover:text-gold-bright">
                 {t.nav[linkKey]}
               </NavLink>
             </li>
           ))}
           <li>
-            <a
-              href="#reserve"
-              onClick={() => setOpen(false)}
-              className="inline-flex items-center justify-center border border-gold/60 px-5 py-2 text-sm tracking-[0.2em] uppercase text-gold-bright hover:bg-gold hover:text-obsidian transition-colors duration-300"
-            >
+            <a href="#reserve" onClick={() => setOpen(false)} className="inline-flex items-center justify-center border border-gold/60 px-5 py-2 text-sm tracking-[0.2em] uppercase text-gold-bright hover:bg-gold hover:text-obsidian transition-colors duration-300">
               {t.nav.reserve}
             </a>
           </li>
@@ -201,26 +168,15 @@ export default function Nav() {
             {user ? (
               <>
                 {isAdmin && (
-                  <Link
-                    href="/admin/dashboard"
-                    onClick={() => setOpen(false)}
-                    className="block mb-3 text-sm tracking-[0.2em] uppercase text-gold-bright"
-                  >
+                  <Link href="/admin/dashboard" onClick={() => setOpen(false)} className="block mb-3 text-sm tracking-[0.2em] uppercase text-gold-bright">
                     {t.nav.admin}
                   </Link>
                 )}
-                <Link
-                  href="/profile"
-                  onClick={() => setOpen(false)}
-                  className="block mb-5 text-sm tracking-[0.2em] uppercase text-cream hover:text-gold-bright"
-                >
-                  Profile
+                <Link href="/profile" onClick={() => setOpen(false)} className="block mb-5 text-sm tracking-[0.2em] uppercase text-cream hover:text-gold-bright">
+                  {t.nav.profile}
                 </Link>
                 <button
-                  onClick={() => {
-                    signOut();
-                    setOpen(false);
-                  }}
+                  onClick={() => { signOut(); setOpen(false); }}
                   className="text-sm tracking-[0.2em] uppercase text-cream hover:text-gold-bright flex items-center gap-2"
                 >
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
@@ -232,11 +188,7 @@ export default function Nav() {
                 </button>
               </>
             ) : (
-              <Link
-                href="/login"
-                onClick={() => setOpen(false)}
-                className="text-sm tracking-[0.2em] uppercase text-cream hover:text-gold-bright flex items-center gap-2"
-              >
+              <Link href="/login" onClick={() => setOpen(false)} className="text-sm tracking-[0.2em] uppercase text-cream hover:text-gold-bright flex items-center gap-2">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
                   <polyline points="10 17 15 12 10 7" />
