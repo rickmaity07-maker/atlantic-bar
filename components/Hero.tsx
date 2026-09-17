@@ -32,7 +32,7 @@ export default function Hero() {
       <div className="absolute inset-0 bg-linear-to-t from-obsidian via-transparent to-obsidian/40" />
 
       {/* CONTENT GRID */}
-      <div className="relative z-10 h-full w-full max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-2 items-center pt-24 pb-16 px-6 lg:px-12 overflow-y-auto">
+      <div className="relative z-10 h-full w-full max-w-350 mx-auto grid grid-cols-1 md:grid-cols-2 items-center pt-24 pb-16 px-6 lg:px-12 overflow-y-auto">
         
         {/* LEFT SIDE: Image Logo & Brand */}
         <div className="flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-gold/20 pb-10 md:pb-0 md:pr-8 lg:pr-12">
@@ -42,7 +42,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 2.4, ease: [0.22, 1, 0.36, 1] }}
-            className="relative w-full max-w-[320px] sm:max-w-[400px] md:max-w-[480px] aspect-[2.3/1] mb-2"
+            className="relative w-full max-w-[320px] sm:max-w-100 md:max-w-120 aspect-[2.3/1] mb-2"
           >
             <Image
               src="/hero-logo-gold.png"
@@ -58,7 +58,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 2.4, ease: [0.22, 1, 0.36, 1] }}
-            className="relative w-full max-w-[320px] sm:max-w-[400px] md:max-w-[480px] aspect-[2.3/1] mb-2"
+            className="relative w-full max-w-[320px] sm:max-w-100 md:max-w-120 aspect-[2.3/1] mb-2"
           >
             <Image
               src="/hero-logo-gold.png" 
@@ -116,7 +116,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.9, delay: 3.6 }}
-            className="mt-8 border border-gold/40 rounded-lg p-6 w-full max-w-[420px] bg-obsidian/40 backdrop-blur-sm"
+            className="mt-8 border border-gold/40 rounded-lg p-6 w-full max-w-105 bg-obsidian/40 backdrop-blur-sm"
           >
             <h3 className="text-lg md:text-xl font-semibold uppercase tracking-[0.15em] text-gold-bright mb-4">
               Aktuelle Angebote & Aktionen
@@ -159,7 +159,7 @@ export default function Hero() {
             initial={{ opacity: 0, y: 40 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 1.2, delay: 2.4, ease: [0.22, 1, 0.36, 1] }}
-            className="relative w-full max-w-[320px] sm:max-w-[400px] md:max-w-[480px] aspect-[2.3/1] mb-2"
+            className="relative w-full max-w-[320px] sm:max-w-100 md:max-w-120 aspect-[2.3/1] mb-2"
           >
             <Image
               src="/atlantic-logo-gold.png" /* Make sure this is .png! */
