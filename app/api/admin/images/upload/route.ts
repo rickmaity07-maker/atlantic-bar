@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getStorage } from "firebase-admin/storage";
+import { FieldValue } from "firebase-admin/firestore";
 import { getAdminSession } from "@/lib/adminAuth";
-import { getAdminApp, getDb } from "@/lib/firebaseAdmin";
+import { getDb } from "@/lib/firebaseAdmin";
+import { uploadImageToCloudinary } from "@/lib/cloudinary";
 import { SITE_IMAGE_DEFAULTS } from "@/lib/siteContent";
 
 const MAX_BYTES = 8 * 1024 * 1024;
@@ -28,46 +29,33 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Image must be 8 MB or smaller." }, { status: 400 });
   }
 
-  const bucketName = process.env.FIREBASE_STORAGE_BUCKET;
-  if (!bucketName) {
-    return NextResponse.json(
-      { error: "FIREBASE_STORAGE_BUCKET is not configured on the server." },
-      { status: 500 }
-    );
-  }
-
   try {
-    const bytes = Buffer.from(await file.arrayBuffer());
-    const extension = file.type === "image/jpeg" ? "jpg" : file.type.split("/")[1] ?? "bin";
-    const path = `site-images/${key}-${Date.now()}.${extension}`;
-    const bucket = getStorage(getAdminApp()).bucket(bucketName);
-    const object = bucket.file(path);
-
-    await object.save(bytes, {
-      metadata: {
-        contentType: file.type,
-        cacheControl: "public,max-age=31536000,immutable",
-      },
-      resumable: false,
+    const buffer = Buffer.from(await file.arrayBuffer());
+    const { imageUrl } = await uploadImageToCloudinary(buffer, {
+      folder: "site-images",
+      publicId: key,
+      contentType: file.type,
     });
-    await object.makePublic();
 
-    const imageUrl = `https://storage.googleapis.com/${bucket.name}/${path
-      .split("/")
-      .map(encodeURIComponent)
-      .join("/")}`;
-
-    await getDb().collection("siteContent").doc(key).set(
-      { imageUrl, updatedAt: new Date(), updatedBy: session.uid },
-      { merge: true }
-    );
+    await getDb()
+      .collection("siteContent")
+      .doc(key)
+      .set(
+        {
+          imageUrl,
+          updatedAt: FieldValue.serverTimestamp(),
+          updatedBy: session.uid,
+        },
+        { merge: true }
+      );
 
     return NextResponse.json({ ok: true, key, imageUrl });
   } catch (error) {
-    console.error("Image upload failed:", error);
-    return NextResponse.json(
-      { error: "Upload failed. Check Firebase Storage and FIREBASE_STORAGE_BUCKET." },
-      { status: 500 }
-    );
+    console.error("Cloudinary site-image upload failed:", error);
+    const message =
+      error instanceof Error && error.message.includes("Missing Cloudinary")
+        ? error.message
+        : "Upload failed. Check Cloudinary configuration.";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }

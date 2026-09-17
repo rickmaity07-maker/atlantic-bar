@@ -12,6 +12,7 @@
     "@react-three/drei": "^10.7.8",
     "@react-three/fiber": "^9.7.0",
     "@react-three/postprocessing": "^3.1.0",
+    "cloudinary": "^2.6.1",
     "firebase": "^11.0.2",
     "firebase-admin": "^13.0.0",
     "framer-motion": "^13.1.1",
