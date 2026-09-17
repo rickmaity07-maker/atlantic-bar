@@ -69,6 +69,14 @@ export default function MenuPage() {
       <main className="pt-20">
         <section className="relative bg-charcoal py-28 md:py-36">
           <div className="mx-auto max-w-7xl px-6 md:px-10">
+            <div className="mb-8">
+              <Link
+                href="/"
+                className="inline-flex items-center gap-2 text-xs tracking-[0.2em] uppercase text-smoke hover:text-gold-bright transition-colors"
+              >
+                <span aria-hidden>←</span> Back to main page
+              </Link>
+            </div>
             <SectionHeading eyebrow={t.menu.eyebrow} title={t.menu.title} />
             
             <div className="mt-12 overflow-x-auto">

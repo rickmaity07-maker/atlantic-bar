@@ -70,6 +70,14 @@ export default function SpielzeugPage() {
           </div>
 
           <div className="relative mx-auto max-w-7xl px-6 md:px-10">
+            <div className="mb-8 text-center">
+              <Link
+                href="/"
+                className="inline-flex items-center gap-2 text-xs tracking-[0.2em] uppercase text-smoke hover:text-gold-bright transition-colors"
+              >
+                <span aria-hidden>←</span> Back to main page
+              </Link>
+            </div>
             <SectionHeading eyebrow={t.spielzeug.eyebrow} title={t.spielzeug.title} align="center" />
 
             <p className="mt-8 max-w-3xl mx-auto text-center text-smoke leading-relaxed">
