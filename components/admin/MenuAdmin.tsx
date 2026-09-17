@@ -86,7 +86,6 @@ export default function MenuAdmin() {
     setForm(BLANK);
   }
 
-
   async function uploadImage(file: File) {
     setUploadingImage(true);
     setError(null);
@@ -108,8 +107,13 @@ export default function MenuAdmin() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
-    setSaving(true);
 
+    if (!form.imageUrl) {
+      setError("Please upload an image before saving.");
+      return;
+    }
+
+    setSaving(true);
     try {
       const url = editingId ? `/api/admin/menu/${editingId}` : "/api/admin/menu";
       const method = editingId ? "PATCH" : "POST";
@@ -157,7 +161,11 @@ export default function MenuAdmin() {
               onChange={(e) => setForm({ ...form, category: e.target.value as Category })}
               className="mt-2 w-full bg-charcoal border border-cream/20 px-3 py-2 text-cream outline-none"
             >
-              {CATEGORIES.map((c) => <option key={c.value} value={c.value}>{c.label}</option>)}
+              {CATEGORIES.map((c) => (
+                <option key={c.value} value={c.value}>
+                  {c.label}
+                </option>
+              ))}
             </select>
           </label>
 
@@ -193,31 +201,31 @@ export default function MenuAdmin() {
           />
         </label>
 
-        <label className="block mb-5">
-          <span className="text-[11px] tracking-[0.2em] uppercase text-smoke">Image URL</span>
-          <input
-            required
-            type="url"
-            value={form.imageUrl}
-            onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
-            placeholder="https://..."
-            className="mt-2 w-full bg-transparent border-b border-cream/25 focus:border-gold py-2 text-cream outline-none"
-          />
-        </label>
-        <label className="inline-flex border border-cream/20 px-4 py-2 text-[10px] tracking-[0.16em] uppercase text-smoke hover:text-cream cursor-pointer mb-6">
-          {uploadingImage ? "Uploading…" : "Upload Image File"}
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/webp,image/avif"
-            className="hidden"
-            disabled={uploadingImage}
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              e.target.value = "";
-              if (file) uploadImage(file);
-            }}
-          />
-        </label>
+        <div className="mb-6">
+          <span className="text-[11px] tracking-[0.2em] uppercase text-smoke block mb-3">Image</span>
+          {form.imageUrl ? (
+            <div className="relative h-40 w-full max-w-md mb-3 border border-cream/10 overflow-hidden">
+              <Image src={form.imageUrl} alt="Preview" fill unoptimized className="object-cover" />
+            </div>
+          ) : null}
+          <label className="inline-flex border border-cream/20 px-4 py-2 text-[10px] tracking-[0.16em] uppercase text-smoke hover:text-cream cursor-pointer">
+            {uploadingImage ? "Uploading…" : form.imageUrl ? "Replace Image" : "Upload Image"}
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/avif"
+              className="hidden"
+              disabled={uploadingImage}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                e.target.value = "";
+                if (file) uploadImage(file);
+              }}
+            />
+          </label>
+          {!form.imageUrl && (
+            <p className="mt-2 text-xs text-smoke">Upload a JPG, PNG, WEBP or AVIF file.</p>
+          )}
+        </div>
 
         <label className="block mb-6 max-w-35">
           <span className="text-[11px] tracking-[0.2em] uppercase text-smoke">Order</span>
@@ -232,13 +240,17 @@ export default function MenuAdmin() {
         <div className="flex gap-3">
           <button
             type="submit"
-            disabled={saving}
+            disabled={saving || uploadingImage}
             className="border border-gold px-8 py-3 text-xs tracking-[0.2em] uppercase text-obsidian bg-gold disabled:opacity-60"
           >
             {saving ? "Saving…" : editingId ? "Save Changes" : "Add to Menu"}
           </button>
           {editingId && (
-            <button type="button" onClick={cancelEdit} className="border border-cream/20 px-8 py-3 text-xs tracking-[0.2em] uppercase text-smoke hover:text-cream">
+            <button
+              type="button"
+              onClick={cancelEdit}
+              className="border border-cream/20 px-8 py-3 text-xs tracking-[0.2em] uppercase text-smoke hover:text-cream"
+            >
               Cancel
             </button>
           )}
@@ -263,8 +275,12 @@ export default function MenuAdmin() {
                 </div>
                 <p className="text-smoke text-xs mt-2">{item.note}</p>
                 <div className="flex gap-4 mt-4">
-                  <button onClick={() => startEdit(item)} className="text-xs text-gold-bright hover:text-cream">Edit / Replace</button>
-                  <button onClick={() => handleDelete(item.id)} className="text-xs text-red-400 hover:text-red-300">Delete</button>
+                  <button onClick={() => startEdit(item)} className="text-xs text-gold-bright hover:text-cream">
+                    Edit / Replace
+                  </button>
+                  <button onClick={() => handleDelete(item.id)} className="text-xs text-red-400 hover:text-red-300">
+                    Delete
+                  </button>
                 </div>
               </div>
             </div>

@@ -54,7 +54,6 @@ export default function GalleryAdmin() {
     setForm(BLANK);
   }
 
-
   async function uploadImage(file: File) {
     setUploadingImage(true);
     setError(null);
@@ -76,6 +75,12 @@ export default function GalleryAdmin() {
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
     setError(null);
+
+    if (!form.imageUrl) {
+      setError("Please upload an image before saving.");
+      return;
+    }
+
     setSaving(true);
     try {
       const url = editingId ? `/api/admin/gallery/${editingId}` : "/api/admin/gallery";
@@ -124,31 +129,33 @@ export default function GalleryAdmin() {
             className="mt-2 w-full bg-transparent border-b border-cream/25 focus:border-gold py-2 text-cream outline-none"
           />
         </label>
-        <label className="block mb-5">
-          <span className="text-[11px] tracking-[0.2em] uppercase text-smoke">Image URL</span>
-          <input
-            required
-            type="url"
-            value={form.imageUrl}
-            onChange={(e) => setForm({ ...form, imageUrl: e.target.value })}
-            placeholder="https://..."
-            className="mt-2 w-full bg-transparent border-b border-cream/25 focus:border-gold py-2 text-cream outline-none"
-          />
-        </label>
-        <label className="inline-flex border border-cream/20 px-4 py-2 text-[10px] tracking-[0.16em] uppercase text-smoke hover:text-cream cursor-pointer mb-6">
-          {uploadingImage ? "Uploading…" : "Upload Image File"}
-          <input
-            type="file"
-            accept="image/jpeg,image/png,image/webp,image/avif"
-            className="hidden"
-            disabled={uploadingImage}
-            onChange={(e) => {
-              const file = e.target.files?.[0];
-              e.target.value = "";
-              if (file) uploadImage(file);
-            }}
-          />
-        </label>
+
+        <div className="mb-6">
+          <span className="text-[11px] tracking-[0.2em] uppercase text-smoke block mb-3">Image</span>
+          {form.imageUrl ? (
+            <div className="relative h-40 w-full max-w-md mb-3 border border-cream/10 overflow-hidden">
+              <Image src={form.imageUrl} alt="Preview" fill unoptimized className="object-cover" />
+            </div>
+          ) : null}
+          <label className="inline-flex border border-cream/20 px-4 py-2 text-[10px] tracking-[0.16em] uppercase text-smoke hover:text-cream cursor-pointer">
+            {uploadingImage ? "Uploading…" : form.imageUrl ? "Replace Image" : "Upload Image"}
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/avif"
+              className="hidden"
+              disabled={uploadingImage}
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                e.target.value = "";
+                if (file) uploadImage(file);
+              }}
+            />
+          </label>
+          {!form.imageUrl && (
+            <p className="mt-2 text-xs text-smoke">Upload a JPG, PNG, WEBP or AVIF file.</p>
+          )}
+        </div>
+
         <div className="grid md:grid-cols-2 gap-5 mb-6">
           <label className="block">
             <span className="text-[11px] tracking-[0.2em] uppercase text-smoke">Tile Size</span>
@@ -176,7 +183,7 @@ export default function GalleryAdmin() {
         <div className="flex gap-3">
           <button
             type="submit"
-            disabled={saving}
+            disabled={saving || uploadingImage}
             className="border border-gold px-8 py-3 text-xs tracking-[0.2em] uppercase text-obsidian bg-gold disabled:opacity-60"
           >
             {saving ? "Saving…" : editingId ? "Save Changes" : "Add to Gallery"}
@@ -205,7 +212,7 @@ export default function GalleryAdmin() {
           {items.map((item) => (
             <div key={item.id} className="border border-gold/20 bg-charcoal/50">
               <div className="relative h-40 w-full">
-                <Image src={item.imageUrl} alt={item.label} fill className="object-cover" />
+                <Image src={item.imageUrl} alt={item.label} fill unoptimized className="object-cover" />
               </div>
               <div className="p-4">
                 <h3 className="text-cream text-sm font-medium">{item.label}</h3>

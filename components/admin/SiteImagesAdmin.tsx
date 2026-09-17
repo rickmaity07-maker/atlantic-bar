@@ -8,7 +8,6 @@ type Images = Record<SiteImageKey, string>;
 
 export default function SiteImagesAdmin() {
   const [images, setImages] = useState<Images>(SITE_IMAGE_DEFAULTS);
-  const [saving, setSaving] = useState<SiteImageKey | null>(null);
   const [uploading, setUploading] = useState<SiteImageKey | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -22,25 +21,6 @@ export default function SiteImagesAdmin() {
   useEffect(() => {
     load().catch((err) => setError(err.message));
   }, []);
-
-  async function saveUrl(key: SiteImageKey) {
-    setSaving(key);
-    setError(null);
-    try {
-      const res = await fetch("/api/admin/images", {
-        method: "PATCH",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ key, imageUrl: images[key] }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Could not save image.");
-      setImages((current) => ({ ...current, [key]: data.imageUrl }));
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Could not save image.");
-    } finally {
-      setSaving(null);
-    }
-  }
 
   async function upload(key: SiteImageKey, event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -87,8 +67,8 @@ export default function SiteImagesAdmin() {
   return (
     <div>
       <div className="mb-8 border border-gold/20 bg-charcoal/40 p-5 text-smoke text-sm leading-relaxed">
-        Upload a new image or paste an image URL. Saving changes the database value;
-        the existing layout, animation, sizing and styling are not changed.
+        Upload an image file to replace any site image. Changes are saved to the database
+        immediately. Layout, animation, sizing and styling stay the same.
       </div>
 
       {error && <p className="mb-6 text-sm text-red-400">{error}</p>}
@@ -107,33 +87,16 @@ export default function SiteImagesAdmin() {
                   <Image src={images[key]} alt={SITE_IMAGE_LABELS[key]} fill unoptimized className="object-cover" />
                 </div>
 
-                <input
-                  value={images[key]}
-                  onChange={(e) => setImages((current) => ({ ...current, [key]: e.target.value }))}
-                  className="w-full bg-transparent border-b border-cream/25 focus:border-gold py-2 text-xs text-cream outline-none"
-                  placeholder="https://..."
-                />
-
-                <div className="flex flex-wrap gap-3 mt-4">
-                  <button
-                    onClick={() => saveUrl(key)}
-                    disabled={saving === key}
-                    className="border border-gold px-4 py-2 text-[10px] tracking-[0.16em] uppercase text-obsidian bg-gold disabled:opacity-60"
-                  >
-                    {saving === key ? "Saving…" : "Save URL"}
-                  </button>
-
-                  <label className="border border-cream/20 px-4 py-2 text-[10px] tracking-[0.16em] uppercase text-smoke hover:text-cream cursor-pointer">
-                    {uploading === key ? "Uploading…" : "Upload Image"}
-                    <input
-                      type="file"
-                      accept="image/jpeg,image/png,image/webp,image/avif"
-                      onChange={(e) => upload(key, e)}
-                      disabled={uploading === key}
-                      className="hidden"
-                    />
-                  </label>
-                </div>
+                <label className="inline-flex border border-gold px-4 py-2 text-[10px] tracking-[0.16em] uppercase text-obsidian bg-gold cursor-pointer disabled:opacity-60">
+                  {uploading === key ? "Uploading…" : "Upload Image"}
+                  <input
+                    type="file"
+                    accept="image/jpeg,image/png,image/webp,image/avif"
+                    onChange={(e) => upload(key, e)}
+                    disabled={uploading === key}
+                    className="hidden"
+                  />
+                </label>
               </div>
             ))}
           </div>
