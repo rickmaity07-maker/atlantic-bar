@@ -4,3 +4,8 @@ out
 .env*.local
 .vercel
 *.tsbuildinfo
+
+# Never track ad-hoc project backups/archives — one (eslint.config.zip) was
+# previously committed by accident and contained a full copy of .env.local,
+# leaking production secrets to this repo's public history.
+*.zip
