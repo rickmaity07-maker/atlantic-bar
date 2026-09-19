@@ -14,9 +14,9 @@ const isDev = process.env.NODE_ENV === "development";
 const cspHeader = `
   default-src 'self';
   script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""} https://www.gstatic.com https://www.google.com https://apis.google.com;
-  style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+  style-src 'self' 'unsafe-inline';
   img-src 'self' data: blob: https:;
-  font-src 'self' https://fonts.gstatic.com;
+  font-src 'self';
   connect-src 'self' https://*.googleapis.com https://*.google.com https://*.firebaseio.com wss://*.firebaseio.com https://res.cloudinary.com https://api.cloudinary.com https://www.gstatic.com;
   frame-src 'self' https://*.firebaseapp.com https://www.google.com https://www.gstatic.com https://accounts.google.com https://www.facebook.com;
   worker-src 'self' blob:;

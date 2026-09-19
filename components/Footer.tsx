@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useLanguage } from "@/app/context/LanguageContext";
 import { useBusinessHours } from "@/app/context/BusinessHoursContext";
 import { groupBusinessHours } from "@/lib/businessHours";
@@ -102,6 +103,21 @@ export default function Footer() {
       </div>
 
       <div className="hairline mx-auto max-w-7xl mt-12 mb-6" />
+
+      <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mb-4 px-6">
+        <Link
+          href="/impressum"
+          className="text-[11px] tracking-[0.1em] text-smoke/70 hover:text-gold-bright transition-colors"
+        >
+          {t.legal.impressumNav}
+        </Link>
+        <Link
+          href="/datenschutz"
+          className="text-[11px] tracking-[0.1em] text-smoke/70 hover:text-gold-bright transition-colors"
+        >
+          {t.legal.datenschutzNav}
+        </Link>
+      </div>
 
       <p className="text-center text-[11px] tracking-[0.15em] text-smoke/70 px-6">
         © {new Date().getFullYear()} {t.footer.copyright}

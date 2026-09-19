@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import AdminSubNav from "./AdminSubNav";
+import { useLanguage } from "@/app/context/LanguageContext";
 
 export type ReservationStatus = "pending" | "confirmed" | "cancelled";
 
@@ -27,6 +28,7 @@ export default function AdminDashboard({
   initialReservations: Reservation[];
 }) {
   const router = useRouter();
+  const { t } = useLanguage();
   const [reservations, setReservations] = useState(initialReservations);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<"all" | ReservationStatus>("all");
@@ -89,7 +91,7 @@ export default function AdminDashboard({
   }
 
   async function deleteReservation(id: string) {
-    if (!confirm("Delete this reservation permanently?")) return;
+    if (!confirm(t.admin.dashboard.deleteConfirm)) return;
     setBusyId(id);
     const previous = reservations;
     setReservations((rs) => rs.filter((r) => r.id !== id));
@@ -104,7 +106,13 @@ export default function AdminDashboard({
   }
 
   function exportCsv() {
-    const header = ["Name", "Date", "Guests", "Status", "Submitted"];
+    const header = [
+      t.admin.dashboard.colName,
+      t.admin.dashboard.colDate,
+      t.admin.dashboard.colGuests,
+      t.admin.dashboard.colStatus,
+      t.admin.dashboard.colSubmitted,
+    ];
     const rows = filtered.map((r) => [
       r.name,
       r.date,
@@ -142,7 +150,7 @@ export default function AdminDashboard({
           <div>
             <p className="font-script text-2xl text-gold-bright mb-1">Atlantic Lounge Bar</p>
             <h1 className="font-display text-2xl uppercase tracking-wide text-cream">
-              Reservations
+              {t.admin.dashboard.heading}
             </h1>
           </div>
           <button
@@ -150,7 +158,7 @@ export default function AdminDashboard({
             disabled={loggingOut}
             className="text-xs tracking-[0.2em] uppercase text-smoke hover:text-gold-bright transition-colors disabled:opacity-50"
           >
-            {loggingOut ? "Signing out…" : "Sign Out"}
+            {loggingOut ? t.admin.signingOut : t.admin.signOut}
           </button>
         </div>
 
@@ -158,10 +166,10 @@ export default function AdminDashboard({
 
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
           {[
-            { label: "Total Reservations", value: stats.total },
-            { label: "Pending", value: stats.pending },
-            { label: "Today", value: stats.today },
-            { label: "Total Guests", value: stats.totalGuests },
+            { label: t.admin.dashboard.statTotal, value: stats.total },
+            { label: t.admin.dashboard.statPending, value: stats.pending },
+            { label: t.admin.dashboard.statToday, value: stats.today },
+            { label: t.admin.dashboard.statTotalGuests, value: stats.totalGuests },
           ].map((s) => (
             <div key={s.label} className="border border-gold/20 bg-charcoal/50 p-5">
               <p className="text-2xl font-display text-gold-bright">{s.value}</p>
@@ -175,7 +183,7 @@ export default function AdminDashboard({
         <div className="flex flex-wrap items-center gap-3 mb-6">
           <input
             type="text"
-            placeholder="Search by name…"
+            placeholder={t.admin.dashboard.searchPlaceholder}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="bg-charcoal/50 border border-cream/20 focus:border-gold px-4 py-2 text-sm text-cream outline-none flex-1 min-w-45"
@@ -185,29 +193,29 @@ export default function AdminDashboard({
             onChange={(e) => setStatusFilter(e.target.value as typeof statusFilter)}
             className="bg-charcoal/50 border border-cream/20 px-4 py-2 text-sm text-cream outline-none"
           >
-            <option value="all">All statuses</option>
-            <option value="pending">Pending</option>
-            <option value="confirmed">Confirmed</option>
-            <option value="cancelled">Cancelled</option>
+            <option value="all">{t.admin.dashboard.statusAll}</option>
+            <option value="pending">{t.status.pending}</option>
+            <option value="confirmed">{t.status.confirmed}</option>
+            <option value="cancelled">{t.status.cancelled}</option>
           </select>
           <button
             onClick={() => setSortAsc((s) => !s)}
             className="text-xs tracking-[0.15em] uppercase text-smoke hover:text-gold-bright border border-cream/20 px-4 py-2"
           >
-            Date {sortAsc ? "↑" : "↓"}
+            {t.admin.dashboard.sortDate} {sortAsc ? "↑" : "↓"}
           </button>
           <button
             onClick={refresh}
             disabled={refreshing}
             className="text-xs tracking-[0.15em] uppercase text-smoke hover:text-gold-bright border border-cream/20 px-4 py-2 disabled:opacity-50"
           >
-            {refreshing ? "Refreshing…" : "Refresh"}
+            {refreshing ? t.admin.dashboard.refreshing : t.admin.dashboard.refresh}
           </button>
           <button
             onClick={exportCsv}
             className="text-xs tracking-[0.15em] uppercase text-obsidian bg-gold hover:bg-gold-bright px-4 py-2"
           >
-            Export CSV
+            {t.admin.dashboard.exportCsv}
           </button>
         </div>
 
@@ -215,12 +223,12 @@ export default function AdminDashboard({
           <table className="w-full text-sm">
             <thead>
               <tr className="border-b border-gold/20 text-left text-[11px] tracking-[0.15em] uppercase text-smoke">
-                <th className="px-4 py-3">Name</th>
-                <th className="px-4 py-3">Date</th>
-                <th className="px-4 py-3">Guests</th>
-                <th className="px-4 py-3">Status</th>
-                <th className="px-4 py-3">Submitted</th>
-                <th className="px-4 py-3 text-right">Actions</th>
+                <th className="px-4 py-3">{t.admin.dashboard.colName}</th>
+                <th className="px-4 py-3">{t.admin.dashboard.colDate}</th>
+                <th className="px-4 py-3">{t.admin.dashboard.colGuests}</th>
+                <th className="px-4 py-3">{t.admin.dashboard.colStatus}</th>
+                <th className="px-4 py-3">{t.admin.dashboard.colSubmitted}</th>
+                <th className="px-4 py-3 text-right">{t.admin.dashboard.colActions}</th>
               </tr>
             </thead>
             <tbody>
@@ -238,13 +246,13 @@ export default function AdminDashboard({
                       }
                       className={`border px-2 py-1 text-xs bg-transparent outline-none ${STATUS_STYLES[r.status]}`}
                     >
-                      <option value="pending">Pending</option>
-                      <option value="confirmed">Confirmed</option>
-                      <option value="cancelled">Cancelled</option>
+                      <option value="pending">{t.status.pending}</option>
+                      <option value="confirmed">{t.status.confirmed}</option>
+                      <option value="cancelled">{t.status.cancelled}</option>
                     </select>
                   </td>
                   <td className="px-4 py-3 text-smoke text-xs">
-                    {r.createdAt ? new Date(r.createdAt).toLocaleString() : "—"}
+                    {r.createdAt ? new Date(r.createdAt).toLocaleString() : t.admin.dashboard.notAvailable}
                   </td>
                   <td className="px-4 py-3 text-right">
                     <button
@@ -252,7 +260,7 @@ export default function AdminDashboard({
                       disabled={busyId === r.id}
                       className="text-xs text-red-400 hover:text-red-300 disabled:opacity-50"
                     >
-                      Delete
+                      {t.admin.dashboard.delete}
                     </button>
                   </td>
                 </tr>
@@ -260,7 +268,7 @@ export default function AdminDashboard({
               {filtered.length === 0 && (
                 <tr>
                   <td colSpan={6} className="px-4 py-10 text-center text-smoke text-sm">
-                    No reservations match your filters.
+                    {t.admin.dashboard.noResults}
                   </td>
                 </tr>
               )}

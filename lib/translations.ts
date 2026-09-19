@@ -76,6 +76,7 @@ interface Dictionary {
     schedule: { day: string; title: string; time: string }[];
   };
   testimonials: { text: string; author: string }[];
+  marquee: string[];
   reservation: {
     eyebrow: string;
     title: string;
@@ -152,6 +153,139 @@ interface Dictionary {
     scrollToEnter: string;
     dragToLook: string;
     skipIntro: string;
+  };
+  status: {
+    pending: string;
+    confirmed: string;
+    cancelled: string;
+  };
+  profile: {
+    signInPrompt: string;
+    signInBtn: string;
+    heading: string;
+    accountLabel: string;
+    guestFallbackName: string;
+    adminAccount: string;
+    customerAccount: string;
+    myReservations: string;
+    reserveTableLink: string;
+    noReservations: string;
+    guestsSuffix: string;
+  };
+  legal: {
+    impressumNav: string;
+    datenschutzNav: string;
+    cookieSettingsNav: string;
+  };
+  cookieBanner: {
+    message: string;
+    acceptBtn: string;
+    settingsLinkText: string;
+  };
+  admin: {
+    signOut: string;
+    signingOut: string;
+    backLink: string;
+    dashboard: {
+      heading: string;
+      statTotal: string;
+      statPending: string;
+      statToday: string;
+      statTotalGuests: string;
+      searchPlaceholder: string;
+      statusAll: string;
+      sortDate: string;
+      refresh: string;
+      refreshing: string;
+      exportCsv: string;
+      colName: string;
+      colDate: string;
+      colGuests: string;
+      colStatus: string;
+      colSubmitted: string;
+      colActions: string;
+      delete: string;
+      deleteConfirm: string;
+      noResults: string;
+      notAvailable: string;
+    };
+    gallery: {
+      editTitle: string;
+      addTitle: string;
+      labelField: string;
+      labelPlaceholder: string;
+      imageField: string;
+      uploading: string;
+      replaceImage: string;
+      uploadImage: string;
+      uploadHint: string;
+      tileSize: string;
+      sizeNormal: string;
+      sizeWide: string;
+      sizeLarge: string;
+      order: string;
+      save: string;
+      saveChanges: string;
+      cancel: string;
+      loading: string;
+      empty: string;
+      edit: string;
+      delete: string;
+      deleteConfirm: string;
+      errorNeedImage: string;
+      errorUploadFailed: string;
+      errorSaveFailed: string;
+      errorGeneric: string;
+    };
+    menu: {
+      editTitle: string;
+      addTitle: string;
+      category: string;
+      name: string;
+      price: string;
+      description: string;
+      imageField: string;
+      uploading: string;
+      replaceImage: string;
+      uploadImage: string;
+      uploadHint: string;
+      order: string;
+      save: string;
+      saveChanges: string;
+      cancel: string;
+      loading: string;
+      editReplace: string;
+      delete: string;
+      deleteConfirm: string;
+      errorNeedImage: string;
+      errorUploadFailed: string;
+      errorSaveFailed: string;
+      errorGeneric: string;
+      errorLoadFailed: string;
+      errorDeleteFailed: string;
+    };
+    hours: {
+      heading: string;
+      hint: string;
+      closed: string;
+      open: string;
+      close: string;
+      save: string;
+      saving: string;
+      saved: string;
+      loading: string;
+      loadError: string;
+      saveError: string;
+    };
+    images: {
+      hint: string;
+      group3d: string;
+      groupSections: string;
+      uploading: string;
+      uploadImage: string;
+      loadError: string;
+      uploadFailed: string;
+    };
   };
 }
 
@@ -259,6 +393,14 @@ const de: Dictionary = {
       author: "— The Weekend Review",
     },
   ],
+  marquee: [
+    "LUXURIÖSES AMBIENTE",
+    "PREMIUM-ABENDE",
+    "LIVE-DJ-SETS",
+    "HANDGEMACHTE COCKTAILS",
+    "SAMTENE LOUNGE",
+    "GOLDEN HOUR",
+  ],
   reservation: {
     eyebrow: "Heute Abend dabei sein",
     title: "Reservieren Sie Ihren Tisch",
@@ -349,6 +491,140 @@ const de: Dictionary = {
     scrollToEnter: "Scrollen zum Betreten",
     dragToLook: "Ziehen zum Umschauen",
     skipIntro: "Intro überspringen →",
+  },
+  status: {
+    pending: "Ausstehend",
+    confirmed: "Bestätigt",
+    cancelled: "Storniert",
+  },
+  profile: {
+    signInPrompt: "Bitte melden Sie sich an, um Ihr Profil zu sehen.",
+    signInBtn: "Anmelden",
+    heading: "Mein Profil",
+    accountLabel: "Konto",
+    guestFallbackName: "Atlantic Lounge Gast",
+    adminAccount: "Administrator-Konto",
+    customerAccount: "Kunden-Konto",
+    myReservations: "Meine Reservierungen",
+    reserveTableLink: "Tisch reservieren",
+    noReservations: "Sie haben noch keine Reservierungen.",
+    guestsSuffix: "Gäste",
+  },
+  legal: {
+    impressumNav: "Impressum",
+    datenschutzNav: "Datenschutz",
+    cookieSettingsNav: "Cookie-Einstellungen",
+  },
+  cookieBanner: {
+    message:
+      "Diese Website verwendet nur technisch notwendige Cookies (z. B. für die Anmeldung) und lädt keine Inhalte von Drittanbietern, bevor Sie zustimmen. Mehr dazu in unserer Datenschutzerklärung.",
+    acceptBtn: "Verstanden",
+    settingsLinkText: "Datenschutzerklärung",
+  },
+  admin: {
+    signOut: "Abmelden",
+    signingOut: "Wird abgemeldet…",
+    backLink: "Zurück zur Hauptseite",
+    dashboard: {
+      heading: "Reservierungen",
+      statTotal: "Reservierungen gesamt",
+      statPending: "Ausstehend",
+      statToday: "Heute",
+      statTotalGuests: "Gäste gesamt",
+      searchPlaceholder: "Nach Namen suchen…",
+      statusAll: "Alle Status",
+      sortDate: "Datum",
+      refresh: "Aktualisieren",
+      refreshing: "Wird aktualisiert…",
+      exportCsv: "CSV exportieren",
+      colName: "Name",
+      colDate: "Datum",
+      colGuests: "Gäste",
+      colStatus: "Status",
+      colSubmitted: "Eingereicht",
+      colActions: "Aktionen",
+      delete: "Löschen",
+      deleteConfirm: "Diese Reservierung dauerhaft löschen?",
+      noResults: "Keine Reservierungen entsprechen Ihren Filtern.",
+      notAvailable: "—",
+    },
+    gallery: {
+      editTitle: "Foto bearbeiten",
+      addTitle: "Neues Foto hinzufügen",
+      labelField: "Bezeichnung",
+      labelPlaceholder: "Der Hauptraum",
+      imageField: "Bild",
+      uploading: "Wird hochgeladen…",
+      replaceImage: "Bild ersetzen",
+      uploadImage: "Bild hochladen",
+      uploadHint: "Laden Sie eine JPG-, PNG-, WEBP- oder AVIF-Datei hoch.",
+      tileSize: "Kachelgröße",
+      sizeNormal: "Normal",
+      sizeWide: "Breit (2 Spalten)",
+      sizeLarge: "Groß (2×2)",
+      order: "Reihenfolge",
+      save: "Wird gespeichert…",
+      saveChanges: "Änderungen speichern",
+      cancel: "Abbrechen",
+      loading: "Wird geladen…",
+      empty: "Noch keine Fotos — die Website zeigt die integrierte Standardgalerie, bis Sie hier welche hinzufügen.",
+      edit: "Bearbeiten",
+      delete: "Löschen",
+      deleteConfirm: "Dieses Foto aus der Galerie entfernen?",
+      errorNeedImage: "Bitte laden Sie ein Bild hoch, bevor Sie speichern.",
+      errorUploadFailed: "Hochladen fehlgeschlagen.",
+      errorSaveFailed: "Konnte nicht gespeichert werden.",
+      errorGeneric: "Etwas ist schiefgelaufen.",
+    },
+    menu: {
+      editTitle: "Menüpunkt bearbeiten",
+      addTitle: "Menüpunkt hinzufügen",
+      category: "Kategorie",
+      name: "Name",
+      price: "Preis",
+      description: "Beschreibung",
+      imageField: "Bild",
+      uploading: "Wird hochgeladen…",
+      replaceImage: "Bild ersetzen",
+      uploadImage: "Bild hochladen",
+      uploadHint: "Laden Sie eine JPG-, PNG-, WEBP- oder AVIF-Datei hoch.",
+      order: "Reihenfolge",
+      save: "Wird gespeichert…",
+      saveChanges: "Änderungen speichern",
+      cancel: "Abbrechen",
+      loading: "Wird geladen…",
+      editReplace: "Bearbeiten / Ersetzen",
+      delete: "Löschen",
+      deleteConfirm: "Diesen Artikel von der aktiven Speisekarte entfernen?",
+      errorNeedImage: "Bitte laden Sie ein Bild hoch, bevor Sie speichern.",
+      errorUploadFailed: "Hochladen fehlgeschlagen.",
+      errorSaveFailed: "Konnte nicht gespeichert werden.",
+      errorGeneric: "Etwas ist schiefgelaufen.",
+      errorLoadFailed: "Speisekarte konnte nicht geladen werden.",
+      errorDeleteFailed: "Konnte nicht gelöscht werden.",
+    },
+    hours: {
+      heading: "Öffnungszeiten",
+      hint: "Eine Schließzeit nach Mitternacht (z. B. 5:00) bedeutet, dass geöffnet bis in den nächsten Tag hinein ist.",
+      closed: "Geschlossen",
+      open: "Öffnet",
+      close: "Schließt",
+      save: "Öffnungszeiten speichern",
+      saving: "Wird gespeichert…",
+      saved: "Gespeichert — jetzt live auf der Website.",
+      loading: "Wird geladen…",
+      loadError: "Öffnungszeiten konnten nicht geladen werden.",
+      saveError: "Etwas ist schiefgelaufen.",
+    },
+    images: {
+      hint: "Laden Sie eine Bilddatei hoch, um ein beliebiges Website-Bild zu ersetzen. Änderungen werden sofort gespeichert. Layout, Animation, Größe und Styling bleiben gleich.",
+      group3d: "3D-Intro-Welt",
+      groupSections: "Website-Bereiche",
+      uploading: "Wird hochgeladen…",
+      uploadImage: "Bild hochladen",
+      loadError: "Bilder konnten nicht geladen werden.",
+      uploadFailed: "Hochladen fehlgeschlagen.",
+    },
   },
 };
 
@@ -456,6 +732,14 @@ const en: Dictionary = {
       author: "— The Weekend Review",
     },
   ],
+  marquee: [
+    "LUXURY VIBES",
+    "PREMIUM NIGHTS",
+    "LIVE DJ SETS",
+    "HAND-CRAFTED COCKTAILS",
+    "VELVET LOUNGE",
+    "GOLDEN HOUR",
+  ],
   reservation: {
     eyebrow: "Join Us Tonight",
     title: "Reserve Your Table",
@@ -544,6 +828,140 @@ const en: Dictionary = {
     scrollToEnter: "Scroll to enter",
     dragToLook: "Drag to look around",
     skipIntro: "Skip Intro →",
+  },
+  status: {
+    pending: "Pending",
+    confirmed: "Confirmed",
+    cancelled: "Cancelled",
+  },
+  profile: {
+    signInPrompt: "Please sign in to view your profile.",
+    signInBtn: "Sign In",
+    heading: "My Profile",
+    accountLabel: "Account",
+    guestFallbackName: "Atlantic Lounge Guest",
+    adminAccount: "Administrator account",
+    customerAccount: "Customer account",
+    myReservations: "My Reservations",
+    reserveTableLink: "Reserve a table",
+    noReservations: "You do not have any reservations yet.",
+    guestsSuffix: "guests",
+  },
+  legal: {
+    impressumNav: "Legal Notice",
+    datenschutzNav: "Privacy Policy",
+    cookieSettingsNav: "Cookie Settings",
+  },
+  cookieBanner: {
+    message:
+      "This site only uses strictly necessary cookies (e.g. to keep you signed in) and doesn't load any third-party content before you interact with it. Read more in our Privacy Policy.",
+    acceptBtn: "Got it",
+    settingsLinkText: "Privacy Policy",
+  },
+  admin: {
+    signOut: "Sign Out",
+    signingOut: "Signing out…",
+    backLink: "Back to main page",
+    dashboard: {
+      heading: "Reservations",
+      statTotal: "Total Reservations",
+      statPending: "Pending",
+      statToday: "Today",
+      statTotalGuests: "Total Guests",
+      searchPlaceholder: "Search by name…",
+      statusAll: "All statuses",
+      sortDate: "Date",
+      refresh: "Refresh",
+      refreshing: "Refreshing…",
+      exportCsv: "Export CSV",
+      colName: "Name",
+      colDate: "Date",
+      colGuests: "Guests",
+      colStatus: "Status",
+      colSubmitted: "Submitted",
+      colActions: "Actions",
+      delete: "Delete",
+      deleteConfirm: "Delete this reservation permanently?",
+      noResults: "No reservations match your filters.",
+      notAvailable: "—",
+    },
+    gallery: {
+      editTitle: "Edit Photo",
+      addTitle: "Add New Photo",
+      labelField: "Label",
+      labelPlaceholder: "The Main Room",
+      imageField: "Image",
+      uploading: "Uploading…",
+      replaceImage: "Replace Image",
+      uploadImage: "Upload Image",
+      uploadHint: "Upload a JPG, PNG, WEBP or AVIF file.",
+      tileSize: "Tile Size",
+      sizeNormal: "Normal",
+      sizeWide: "Wide (2 columns)",
+      sizeLarge: "Large (2×2)",
+      order: "Order",
+      save: "Saving…",
+      saveChanges: "Save Changes",
+      cancel: "Cancel",
+      loading: "Loading…",
+      empty: "No photos yet — the site is showing its built-in default gallery until you add some here.",
+      edit: "Edit",
+      delete: "Delete",
+      deleteConfirm: "Remove this photo from the gallery?",
+      errorNeedImage: "Please upload an image before saving.",
+      errorUploadFailed: "Upload failed.",
+      errorSaveFailed: "Could not save.",
+      errorGeneric: "Something went wrong.",
+    },
+    menu: {
+      editTitle: "Edit Menu Item",
+      addTitle: "Add Menu Item",
+      category: "Category",
+      name: "Name",
+      price: "Price",
+      description: "Description",
+      imageField: "Image",
+      uploading: "Uploading…",
+      replaceImage: "Replace Image",
+      uploadImage: "Upload Image",
+      uploadHint: "Upload a JPG, PNG, WEBP or AVIF file.",
+      order: "Order",
+      save: "Saving…",
+      saveChanges: "Save Changes",
+      cancel: "Cancel",
+      loading: "Loading…",
+      editReplace: "Edit / Replace",
+      delete: "Delete",
+      deleteConfirm: "Remove this item from the live menu?",
+      errorNeedImage: "Please upload an image before saving.",
+      errorUploadFailed: "Upload failed.",
+      errorSaveFailed: "Could not save.",
+      errorGeneric: "Something went wrong.",
+      errorLoadFailed: "Could not load menu.",
+      errorDeleteFailed: "Could not delete.",
+    },
+    hours: {
+      heading: "Opening Hours",
+      hint: "A close time past midnight (e.g. 5:00) means the venue stays open into the next day.",
+      closed: "Closed",
+      open: "Open",
+      close: "Close",
+      save: "Save Hours",
+      saving: "Saving…",
+      saved: "Saved — live on the site now.",
+      loading: "Loading…",
+      loadError: "Could not load hours.",
+      saveError: "Something went wrong.",
+    },
+    images: {
+      hint: "Upload an image file to replace any site image. Changes are saved to the database immediately. Layout, animation, sizing and styling stay the same.",
+      group3d: "3D Intro World",
+      groupSections: "Website Sections",
+      uploading: "Uploading…",
+      uploadImage: "Upload Image",
+      loadError: "Could not load images.",
+      uploadFailed: "Upload failed.",
+    },
   },
 };
 

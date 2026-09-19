@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useState, type FormEvent } from "react";
+import { useLanguage } from "@/app/context/LanguageContext";
 
 type Span = "normal" | "wide" | "large";
 
@@ -21,6 +22,7 @@ const BLANK: { label: string; imageUrl: string; span: Span; order: number } = {
 };
 
 export default function GalleryAdmin() {
+  const { t } = useLanguage();
   const [items, setItems] = useState<GalleryItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [form, setForm] = useState(BLANK);
@@ -63,10 +65,10 @@ export default function GalleryAdmin() {
       body.append("folder", "gallery");
       const res = await fetch("/api/admin/upload-image", { method: "POST", body });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Upload failed.");
+      if (!res.ok) throw new Error(data.error ?? t.admin.gallery.errorUploadFailed);
       setForm((current) => ({ ...current, imageUrl: data.imageUrl }));
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Upload failed.");
+      setError(err instanceof Error ? err.message : t.admin.gallery.errorUploadFailed);
     } finally {
       setUploadingImage(false);
     }
@@ -77,7 +79,7 @@ export default function GalleryAdmin() {
     setError(null);
 
     if (!form.imageUrl) {
-      setError("Please upload an image before saving.");
+      setError(t.admin.gallery.errorNeedImage);
       return;
     }
 
@@ -92,19 +94,19 @@ export default function GalleryAdmin() {
       });
       if (!res.ok) {
         const payload = await res.json().catch(() => ({}));
-        throw new Error(payload.error ?? "Could not save.");
+        throw new Error(payload.error ?? t.admin.gallery.errorSaveFailed);
       }
       cancelEdit();
       await load();
     } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong.");
+      setError(err instanceof Error ? err.message : t.admin.gallery.errorGeneric);
     } finally {
       setSaving(false);
     }
   }
 
   async function handleDelete(id: string) {
-    if (!confirm("Remove this photo from the gallery?")) return;
+    if (!confirm(t.admin.gallery.deleteConfirm)) return;
     await fetch(`/api/admin/gallery/${id}`, { method: "DELETE" });
     if (editingId === id) cancelEdit();
     await load();
@@ -117,28 +119,28 @@ export default function GalleryAdmin() {
         className="bg-charcoal/70 border border-gold/25 p-6 md:p-8 mb-10"
       >
         <h2 className="font-display text-lg text-cream uppercase tracking-wide mb-6">
-          {editingId ? "Edit Photo" : "Add New Photo"}
+          {editingId ? t.admin.gallery.editTitle : t.admin.gallery.addTitle}
         </h2>
         <label className="block mb-5">
-          <span className="text-[11px] tracking-[0.2em] uppercase text-smoke">Label</span>
+          <span className="text-[11px] tracking-[0.2em] uppercase text-smoke">{t.admin.gallery.labelField}</span>
           <input
             required
             value={form.label}
             onChange={(e) => setForm({ ...form, label: e.target.value })}
-            placeholder="The Main Room"
+            placeholder={t.admin.gallery.labelPlaceholder}
             className="mt-2 w-full bg-transparent border-b border-cream/25 focus:border-gold py-2 text-cream outline-none"
           />
         </label>
 
         <div className="mb-6">
-          <span className="text-[11px] tracking-[0.2em] uppercase text-smoke block mb-3">Image</span>
+          <span className="text-[11px] tracking-[0.2em] uppercase text-smoke block mb-3">{t.admin.gallery.imageField}</span>
           {form.imageUrl ? (
             <div className="relative h-40 w-full max-w-md mb-3 border border-cream/10 overflow-hidden">
               <Image src={form.imageUrl} alt="Preview" fill unoptimized className="object-cover" />
             </div>
           ) : null}
           <label className="inline-flex border border-cream/20 px-4 py-2 text-[10px] tracking-[0.16em] uppercase text-smoke hover:text-cream cursor-pointer">
-            {uploadingImage ? "Uploading…" : form.imageUrl ? "Replace Image" : "Upload Image"}
+            {uploadingImage ? t.admin.gallery.uploading : form.imageUrl ? t.admin.gallery.replaceImage : t.admin.gallery.uploadImage}
             <input
               type="file"
               accept="image/jpeg,image/png,image/webp,image/avif"
@@ -152,25 +154,25 @@ export default function GalleryAdmin() {
             />
           </label>
           {!form.imageUrl && (
-            <p className="mt-2 text-xs text-smoke">Upload a JPG, PNG, WEBP or AVIF file.</p>
+            <p className="mt-2 text-xs text-smoke">{t.admin.gallery.uploadHint}</p>
           )}
         </div>
 
         <div className="grid md:grid-cols-2 gap-5 mb-6">
           <label className="block">
-            <span className="text-[11px] tracking-[0.2em] uppercase text-smoke">Tile Size</span>
+            <span className="text-[11px] tracking-[0.2em] uppercase text-smoke">{t.admin.gallery.tileSize}</span>
             <select
               value={form.span}
               onChange={(e) => setForm({ ...form, span: e.target.value as Span })}
               className="mt-2 w-full bg-transparent border-b border-cream/25 focus:border-gold py-2 text-cream outline-none"
             >
-              <option value="normal" className="bg-charcoal">Normal</option>
-              <option value="wide" className="bg-charcoal">Wide (2 columns)</option>
-              <option value="large" className="bg-charcoal">Large (2×2)</option>
+              <option value="normal" className="bg-charcoal">{t.admin.gallery.sizeNormal}</option>
+              <option value="wide" className="bg-charcoal">{t.admin.gallery.sizeWide}</option>
+              <option value="large" className="bg-charcoal">{t.admin.gallery.sizeLarge}</option>
             </select>
           </label>
           <label className="block">
-            <span className="text-[11px] tracking-[0.2em] uppercase text-smoke">Order</span>
+            <span className="text-[11px] tracking-[0.2em] uppercase text-smoke">{t.admin.gallery.order}</span>
             <input
               type="number"
               value={form.order}
@@ -186,7 +188,7 @@ export default function GalleryAdmin() {
             disabled={saving || uploadingImage}
             className="border border-gold px-8 py-3 text-xs tracking-[0.2em] uppercase text-obsidian bg-gold disabled:opacity-60"
           >
-            {saving ? "Saving…" : editingId ? "Save Changes" : "Add to Gallery"}
+            {saving ? t.admin.gallery.save : editingId ? t.admin.gallery.saveChanges : t.admin.gallery.addTitle}
           </button>
           {editingId && (
             <button
@@ -194,7 +196,7 @@ export default function GalleryAdmin() {
               onClick={cancelEdit}
               className="border border-cream/20 px-8 py-3 text-xs tracking-[0.2em] uppercase text-smoke hover:text-cream"
             >
-              Cancel
+              {t.admin.gallery.cancel}
             </button>
           )}
         </div>
@@ -202,11 +204,9 @@ export default function GalleryAdmin() {
       </form>
 
       {loading ? (
-        <p className="text-smoke text-sm">Loading…</p>
+        <p className="text-smoke text-sm">{t.admin.gallery.loading}</p>
       ) : items.length === 0 ? (
-        <p className="text-smoke text-sm">
-          No photos yet — the site is showing its built-in default gallery until you add some here.
-        </p>
+        <p className="text-smoke text-sm">{t.admin.gallery.empty}</p>
       ) : (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {items.map((item) => (
@@ -222,13 +222,13 @@ export default function GalleryAdmin() {
                     onClick={() => startEdit(item)}
                     className="text-xs text-gold-bright hover:text-cream"
                   >
-                    Edit
+                    {t.admin.gallery.edit}
                   </button>
                   <button
                     onClick={() => handleDelete(item.id)}
                     className="text-xs text-red-400 hover:text-red-300"
                   >
-                    Delete
+                    {t.admin.gallery.delete}
                   </button>
                 </div>
               </div>

@@ -1,14 +1,10 @@
-const ITEMS = [
-  "LUXURY VIBES",
-  "PREMIUM NIGHTS",
-  "LIVE DJ SETS",
-  "HAND-CRAFTED COCKTAILS",
-  "VELVET LOUNGE",
-  "GOLDEN HOUR",
-];
+"use client";
+
+import { useLanguage } from "@/app/context/LanguageContext";
 
 export default function Marquee() {
-  const row = [...ITEMS, ...ITEMS];
+  const { t } = useLanguage();
+  const row = [...t.marquee, ...t.marquee];
   return (
     <div className="relative border-y border-gold/20 bg-charcoal py-4 overflow-hidden">
       <div className="flex whitespace-nowrap animate-[marquee_28s_linear_infinite] hover:[animation-play-state:paused]">

@@ -1,11 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { FieldValue } from "firebase-admin/firestore";
 import { getDb } from "@/lib/firebaseAdmin";
-import {
-  SITE_IMAGE_DEFAULTS,
-  SITE_IMAGE_LABELS,
-  type SiteImageKey,
-} from "@/lib/siteContent";
+import { SITE_IMAGE_DEFAULTS } from "@/lib/siteContent";
 
 export const dynamic = "force-dynamic";
 
