@@ -6,7 +6,11 @@ import { getDb, getAdminAuth } from "@/lib/firebaseAdmin";
 
 // Basic in-memory rate limit (per server instance). Good enough to stop
 // accidental double-submits and light abuse; not a substitute for a WAF.
-const recentSubmissions = new Map<string, number>();
+// Keyed on both the (spoofable) client IP and the (unspoofable, cryptographically
+// verified) account uid — the uid check can't be bypassed by forging
+// X-Forwarded-For, which the IP-only check alone was vulnerable to.
+const recentSubmissionsByIp = new Map<string, number>();
+const recentSubmissionsByUid = new Map<string, number>();
 const RATE_LIMIT_WINDOW_MS = 60_000;
 
 const ReservationSchema = z.object({
@@ -47,9 +51,17 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const lastSubmitByUid = recentSubmissionsByUid.get(decoded.uid);
+  if (lastSubmitByUid && Date.now() - lastSubmitByUid < RATE_LIMIT_WINDOW_MS) {
+    return NextResponse.json(
+      { error: "Please wait a moment before submitting again." },
+      { status: 429 }
+    );
+  }
+
   const ip = req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
-  const lastSubmit = recentSubmissions.get(ip);
-  if (lastSubmit && Date.now() - lastSubmit < RATE_LIMIT_WINDOW_MS) {
+  const lastSubmitByIp = recentSubmissionsByIp.get(ip);
+  if (lastSubmitByIp && Date.now() - lastSubmitByIp < RATE_LIMIT_WINDOW_MS) {
     return NextResponse.json(
       { error: "Please wait a moment before submitting again." },
       { status: 429 }
@@ -110,7 +122,8 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    recentSubmissions.set(ip, Date.now());
+    recentSubmissionsByIp.set(ip, Date.now());
+    recentSubmissionsByUid.set(decoded.uid, Date.now());
     return NextResponse.json({ ok: true, id: docRef.id }, { status: 201 });
   } catch (err) {
     console.error("Reservation submission failed:", err);

@@ -10,6 +10,8 @@ const IntroWorld = dynamic(() => import("./IntroWorld"), { ssr: false });
 
 type Phase = "playing" | "wiping" | "done";
 
+const INTRO_SEEN_KEY = "atlantic-intro-seen";
+
 export default function IntroExperience({ onFinish }: { onFinish: () => void }) {
   const { t } = useLanguage();
   const [phase, setPhase] = useState<Phase>("playing");
@@ -27,6 +29,11 @@ export default function IntroExperience({ onFinish }: { onFinish: () => void }) 
   const beginTransition = useCallback(() => {
     if (finished.current) return;
     finished.current = true;
+    try {
+      sessionStorage.setItem(INTRO_SEEN_KEY, "1");
+    } catch {
+      // private browsing / storage disabled — worst case the intro replays
+    }
     setPhase("wiping");
     window.setTimeout(() => {
       setPhase("done");
@@ -36,6 +43,20 @@ export default function IntroExperience({ onFinish }: { onFinish: () => void }) 
   }, [onFinish]);
 
   useEffect(() => {
+    // Already played once this browser session (e.g. the customer just came
+    // back from /login to finish booking a table) — skip straight through
+    // instead of trapping them behind the intro a second time.
+    let alreadySeen = false;
+    try {
+      alreadySeen = sessionStorage.getItem(INTRO_SEEN_KEY) === "1";
+    } catch {
+      // ignore — treat as not seen
+    }
+    if (alreadySeen) {
+      onFinish();
+      return;
+    }
+
     // eslint-disable-next-line react-hooks/set-state-in-effect -- client-only mount flag, required to avoid SSR/hydration mismatch for window-dependent 3D scene
     setReady(true);
     const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -124,7 +145,7 @@ export default function IntroExperience({ onFinish }: { onFinish: () => void }) 
       window.removeEventListener("pointerup", onPointerUp);
       document.body.style.overflow = "";
     };
-  }, [beginTransition]);
+  }, [beginTransition, onFinish]);
 
   if (!ready || phase === "done") return null;
 

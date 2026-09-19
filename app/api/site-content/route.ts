@@ -15,7 +15,7 @@ export async function GET() {
 
   for (const doc of snap.docs) {
     const data = doc.data();
-    if (typeof data.imageUrl === "string" && data.imageUrl.trim()) {
+    if (typeof data.imageUrl === "string" && data.imageUrl.trim() && doc.id in images) {
       images[doc.id] = data.imageUrl;
     }
   }
