@@ -15,6 +15,9 @@ import Reservation from "@/components/Reservation";
 import Spielzeug from "@/components/Spielzeug";
 import Footer from "@/components/Footer";
 
+// Temporarily hidden from the homepage — flip to true to bring it back.
+const SHOW_SPIELZEUG = false;
+
 export default function Home() {
   const [introDone, setIntroDone] = useState(false);
 
@@ -32,7 +35,7 @@ export default function Home() {
         <Nights />
         <Testimonials />
         <Reservation />
-        <Spielzeug />
+        {SHOW_SPIELZEUG && <Spielzeug />}
       </main>
       <Footer />
     </>

@@ -10,6 +10,12 @@ import { useLanguage } from "@/app/context/LanguageContext";
 const NAV_LINKS = ["about", "cocktails", "gallery", "nights", "menu", "spielzeug"] as const;
 const ALL_LINK_KEYS = [...NAV_LINKS, "reserve"] as const;
 
+// Spielzeug is temporarily hidden from the nav (and the homepage section) —
+// remove it from this list to bring it back. Everything else about it stays
+// wired up (route, translations, section component).
+const HIDDEN_NAV_LINKS: ReadonlyArray<(typeof NAV_LINKS)[number]> = ["spielzeug"];
+const VISIBLE_NAV_LINKS = NAV_LINKS.filter((key) => !HIDDEN_NAV_LINKS.includes(key));
+
 const LINK_HREFS: Record<(typeof ALL_LINK_KEYS)[number], string> = {
   about: "#about",
   cocktails: "#cocktails",
@@ -92,7 +98,7 @@ export default function Nav() {
         </a>
 
         <ul className="hidden md:flex items-center gap-8 flex-1 justify-center">
-          {NAV_LINKS.map((linkKey) => (
+          {VISIBLE_NAV_LINKS.map((linkKey) => (
             <li key={linkKey}>
               <NavLink linkKey={linkKey} href={LINK_HREFS[linkKey]}>{t.nav[linkKey]}</NavLink>
             </li>
@@ -152,7 +158,7 @@ export default function Nav() {
           exit={{ height: 0, opacity: 0 }}
           className="md:hidden bg-obsidian/95 border-t border-gold/15 px-6 py-6 flex flex-col gap-5"
         >
-          {NAV_LINKS.map((linkKey) => (
+          {VISIBLE_NAV_LINKS.map((linkKey) => (
             <li key={linkKey}>
               <NavLink linkKey={linkKey} href={LINK_HREFS[linkKey]} onClick={() => setOpen(false)} className="text-sm tracking-[0.2em] uppercase text-cream hover:text-gold-bright">
                 {t.nav[linkKey]}
