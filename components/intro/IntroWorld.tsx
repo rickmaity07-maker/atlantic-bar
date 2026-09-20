@@ -6,7 +6,16 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { Image as DreiImage, Sparkles, Float, Text } from "@react-three/drei";
 import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
 import * as THREE from "three";
+import { configureTextBuilder } from "troika-three-text";
 import { useSiteImages } from "@/app/context/SiteImagesContext";
+
+// Turbopack's dev bundler injects module-scope helper references into the
+// function bodies troika stringifies to build its typesetting Web Worker,
+// which don't exist inside the worker's blob context — the worker's `init`
+// call then fails with "did not return a callable function". Typesetting
+// this scene's single line of text on the main thread is effectively free,
+// so just skip the worker entirely instead of chasing the bundler bug.
+configureTextBuilder({ useWorker: false });
 
 export const CORRIDOR_LENGTH = 46;
 
