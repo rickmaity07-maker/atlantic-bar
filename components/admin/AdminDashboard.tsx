@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import AdminSubNav from "./AdminSubNav";
 import { useLanguage } from "@/app/context/LanguageContext";
 
-export type ReservationStatus = "pending" | "confirmed" | "cancelled";
+export type ReservationStatus = "pending" | "confirmed" | "cancelled" | "waitlist";
 
 export interface Reservation {
   id: string;
@@ -20,6 +20,7 @@ const STATUS_STYLES: Record<ReservationStatus, string> = {
   pending: "bg-gold/15 text-gold-bright border-gold/40",
   confirmed: "bg-green-500/10 text-green-400 border-green-500/30",
   cancelled: "bg-red-500/10 text-red-400 border-red-500/30",
+  waitlist: "bg-blue-500/10 text-blue-400 border-blue-500/30",
 };
 
 export default function AdminDashboard({
@@ -196,6 +197,7 @@ export default function AdminDashboard({
             <option value="all">{t.admin.dashboard.statusAll}</option>
             <option value="pending">{t.status.pending}</option>
             <option value="confirmed">{t.status.confirmed}</option>
+            <option value="waitlist">{t.status.waitlist}</option>
             <option value="cancelled">{t.status.cancelled}</option>
           </select>
           <button
@@ -248,6 +250,7 @@ export default function AdminDashboard({
                     >
                       <option value="pending">{t.status.pending}</option>
                       <option value="confirmed">{t.status.confirmed}</option>
+                      <option value="waitlist">{t.status.waitlist}</option>
                       <option value="cancelled">{t.status.cancelled}</option>
                     </select>
                   </td>

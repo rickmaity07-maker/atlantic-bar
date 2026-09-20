@@ -30,6 +30,7 @@ export default function ProfilePage() {
   function statusLabel(status: string) {
     if (status === "pending") return t.status.pending;
     if (status === "confirmed") return t.status.confirmed;
+    if (status === "waitlist") return t.status.waitlist;
     if (status === "cancelled") return t.status.cancelled;
     return status;
   }

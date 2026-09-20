@@ -158,6 +158,7 @@ interface Dictionary {
     pending: string;
     confirmed: string;
     cancelled: string;
+    waitlist: string;
   };
   profile: {
     signInPrompt: string;
@@ -496,6 +497,7 @@ const de: Dictionary = {
     pending: "Ausstehend",
     confirmed: "Bestätigt",
     cancelled: "Storniert",
+    waitlist: "Warteliste",
   },
   profile: {
     signInPrompt: "Bitte melden Sie sich an, um Ihr Profil zu sehen.",
@@ -833,6 +835,7 @@ const en: Dictionary = {
     pending: "Pending",
     confirmed: "Confirmed",
     cancelled: "Cancelled",
+    waitlist: "Waitlist",
   },
   profile: {
     signInPrompt: "Please sign in to view your profile.",
