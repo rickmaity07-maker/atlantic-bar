@@ -350,7 +350,7 @@ export default function IntroWorld({
         letterSpacing={0.28}
         anchorX="center"
         anchorY="middle"
-        font={undefined}
+        font="/fonts/PlayfairDisplay-Variable.ttf"
       >
         ATLANTIC LOUNGE
       </Text>
