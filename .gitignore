@@ -9,3 +9,4 @@ out
 # previously committed by accident and contained a full copy of .env.local,
 # leaking production secrets to this repo's public history.
 *.zip
+.env*

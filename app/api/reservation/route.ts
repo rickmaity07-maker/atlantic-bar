@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
-import { Resend } from "resend";
 import { FieldValue } from "firebase-admin/firestore";
 import { getDb, getAdminAuth } from "@/lib/firebaseAdmin";
+import { getMailer, getMailFrom, isMailerConfigured } from "@/lib/mailer";
 
 // Basic in-memory rate limit (per server instance). Good enough to stop
 // accidental double-submits and light abuse; not a substitute for a WAF.
@@ -137,15 +137,13 @@ export async function POST(req: NextRequest) {
 
     // Email notifications — non-fatal if either fails; the reservation is
     // already saved in Firestore either way.
-    const resendKey = process.env.RESEND_API_KEY;
     const notifyEmail = process.env.RESERVATION_NOTIFY_EMAIL;
-    const fromAddress = process.env.RESEND_FROM_EMAIL ?? "Atlantic Lounge Bar <onboarding@resend.dev>";
-    const resend = resendKey ? new Resend(resendKey) : null;
+    const mailerReady = isMailerConfigured();
 
-    if (resend && notifyEmail) {
+    if (mailerReady && notifyEmail) {
       try {
-        await resend.emails.send({
-          from: fromAddress,
+        await getMailer().sendMail({
+          from: getMailFrom(),
           to: notifyEmail,
           subject: `New reservation request — ${name}`,
           text: [
@@ -162,11 +160,11 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    if (resend && decoded.email) {
+    if (mailerReady && decoded.email) {
       try {
         const copy = CUSTOMER_EMAIL_COPY[locale];
-        await resend.emails.send({
-          from: fromAddress,
+        await getMailer().sendMail({
+          from: getMailFrom(),
           to: decoded.email,
           subject: copy.subject,
           text: copy.body(name, date, guests),
