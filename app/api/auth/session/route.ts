@@ -25,7 +25,12 @@ export async function POST(req: NextRequest) {
   let decoded;
   try {
     decoded = await auth.verifyIdToken(idToken, true);
-  } catch {
+  } catch (err) {
+    // Swallowed silently before — a 401 with no logged reason is
+    // undiagnosable from Vercel's runtime logs alone. This is almost always
+    // a credential problem (bad/mismatched FIREBASE_PRIVATE_KEY), not an
+    // actually-expired token, so the real code/message matters.
+    console.error("verifyIdToken failed:", err instanceof Error ? err.message : err);
     return NextResponse.json({ error: "Invalid or expired sign-in." }, { status: 401 });
   }
 
