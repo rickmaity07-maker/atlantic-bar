@@ -11,7 +11,7 @@ import Link from "next/link";
 export default function Reservation() {
   const { user, loading: authLoading, needsPhoneVerification } = useAuth();
   const siteImages = useSiteImages();
-  const { t } = useLanguage();
+  const { t, locale } = useLanguage();
   const [sent, setSent] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -45,6 +45,7 @@ export default function Reservation() {
           date: data.get("date"),
           guests: data.get("guests"),
           company: data.get("company") ?? "", // honeypot
+          locale,
         }),
       });
 

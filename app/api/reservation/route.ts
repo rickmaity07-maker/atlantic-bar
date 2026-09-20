@@ -22,7 +22,45 @@ const ReservationSchema = z.object({
   guests: z.coerce.number().int().min(1).max(50),
   // honeypot field — real users never fill this in
   company: z.string().max(0).optional().default(""),
+  locale: z.enum(["de", "en"]).optional().default("de"),
 });
+
+const CUSTOMER_EMAIL_COPY = {
+  de: {
+    subject: "Ihre Reservierungsanfrage ist eingegangen",
+    body: (name: string, date: string, guests: number) =>
+      [
+        `Guten Tag ${name},`,
+        ``,
+        `vielen Dank für Ihre Reservierungsanfrage im Atlantic Lounge Bar.`,
+        ``,
+        `Datum: ${date}`,
+        `Personen: ${guests}`,
+        ``,
+        `Wir bestätigen Ihre Reservierung in Kürze persönlich.`,
+        ``,
+        `Wir freuen uns auf Ihren Besuch!`,
+        `Ihr Atlantic Lounge Bar Team`,
+      ].join("\n"),
+  },
+  en: {
+    subject: "We've received your reservation request",
+    body: (name: string, date: string, guests: number) =>
+      [
+        `Hello ${name},`,
+        ``,
+        `Thank you for your reservation request at Atlantic Lounge Bar.`,
+        ``,
+        `Date: ${date}`,
+        `Guests: ${guests}`,
+        ``,
+        `We'll confirm your table personally shortly.`,
+        ``,
+        `We look forward to welcoming you!`,
+        `The Atlantic Lounge Bar Team`,
+      ].join("\n"),
+  },
+} as const;
 
 export async function POST(req: NextRequest) {
   // Require a signed-in customer — every reservation must be tied to a
@@ -82,7 +120,7 @@ export async function POST(req: NextRequest) {
       { status: 400 }
     );
   }
-  const { name, date, guests } = parsed.data;
+  const { name, date, guests, locale } = parsed.data;
 
   try {
     const db = getDb();
@@ -97,15 +135,17 @@ export async function POST(req: NextRequest) {
       userEmail: decoded.email ?? null,
     });
 
-    // Email notification — non-fatal if it fails; the reservation is
+    // Email notifications — non-fatal if either fails; the reservation is
     // already saved in Firestore either way.
     const resendKey = process.env.RESEND_API_KEY;
     const notifyEmail = process.env.RESERVATION_NOTIFY_EMAIL;
-    if (resendKey && notifyEmail) {
+    const fromAddress = process.env.RESEND_FROM_EMAIL ?? "Atlantic Lounge Bar <onboarding@resend.dev>";
+    const resend = resendKey ? new Resend(resendKey) : null;
+
+    if (resend && notifyEmail) {
       try {
-        const resend = new Resend(resendKey);
         await resend.emails.send({
-          from: process.env.RESEND_FROM_EMAIL ?? "Atlantic Lounge Bar <onboarding@resend.dev>",
+          from: fromAddress,
           to: notifyEmail,
           subject: `New reservation request — ${name}`,
           text: [
@@ -118,7 +158,21 @@ export async function POST(req: NextRequest) {
           ].join("\n"),
         });
       } catch (emailErr) {
-        console.error("Reservation email failed to send:", emailErr);
+        console.error("Reservation admin email failed to send:", emailErr);
+      }
+    }
+
+    if (resend && decoded.email) {
+      try {
+        const copy = CUSTOMER_EMAIL_COPY[locale];
+        await resend.emails.send({
+          from: fromAddress,
+          to: decoded.email,
+          subject: copy.subject,
+          text: copy.body(name, date, guests),
+        });
+      } catch (emailErr) {
+        console.error("Reservation customer email failed to send:", emailErr);
       }
     }
 
