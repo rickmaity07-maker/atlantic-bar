@@ -325,7 +325,7 @@ const de: Dictionary = {
     offersBody:
       "MIT VIELEN GUTEN NEUEN ANGEBOTEN FÜR ALLE GETRÄNKE UND SPASS WIE IMMER zusammen mit gute Vibes",
     offer1: "2 BIER bestellen — das 3. von uns!",
-    offer2: "1 SHOT plus — 1 von uns!",
+    offer2: "2 SHOT plus — 1 von uns!",
     offer3: "2 VODKA Mische — eine plus!",
     offersMore: "Und viele weitere Angebote noch!",
     offersFooter: "Auch wie jedes Mal für die schönste Nächte zusammen zum Erleben.",
@@ -665,7 +665,7 @@ const en: Dictionary = {
     offersBody:
       "WITH MANY GREAT NEW OFFERS ON ALL DRINKS AND FUN AS ALWAYS with good vibes",
     offer1: "Order 2 BEERS — the 3rd is on us!",
-    offer2: "1 SHOT plus — 1 on us!",
+    offer2: "2 SHOT plus — 1 on us!",
     offer3: "2 VODKA mixers — one on us!",
     offersMore: "And many more offers still!",
     offersFooter: "As always, for the most beautiful nights to experience together.",
